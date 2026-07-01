@@ -1,6 +1,6 @@
-import type { HttpContext } from '@adonisjs/core/http'
-import type { NextFn } from '@adonisjs/core/types/http'
-import type { Authenticators } from '@adonisjs/auth/types'
+import type { HttpContext } from '@adonisjs/core/http';
+import type { NextFn } from '@adonisjs/core/types/http';
+import type { Authenticators } from '@adonisjs/auth/types';
 
 /**
  * Guest middleware is used to deny access to routes that should
@@ -10,30 +10,28 @@ import type { Authenticators } from '@adonisjs/auth/types'
  * is already logged-in
  */
 export default class GuestMiddleware {
-  /**
-   * The URL to redirect to when user is logged-in
-   */
-  redirectTo = '/'
+	/**
+	 * The URL to redirect to when user is logged-in
+	 */
+	redirectTo = '/';
 
-  async handle(
-    context: HttpContext,
-    next: NextFn,
-    options: { guards?: (keyof Authenticators)[] } = {}
-  ) {
-    const { auth, session, response } = context
+	async handle(context: HttpContext, next: NextFn, options: { guards?: (keyof Authenticators)[] } = {}) {
+		const { auth, session, response } = context;
 
-    for (let guard of options.guards || [auth.defaultGuard]) {
-      const guardCheck = await auth.use(guard).check()
+		for (const guard of options.guards ?? [auth.defaultGuard]) {
+			const guardCheck = await auth.use(guard).check();
 
-      if (!guardCheck) {
-        continue
-      }
+			if (!guardCheck) {
+				continue;
+			}
 
-      session.reflash()
+			session.reflash();
+			response.redirect(this.redirectTo, true);
 
-      return response.redirect(this.redirectTo, true)
-    }
+			return;
+		}
 
-    return next()
-  }
+		// oxlint-disable-next-line typescript/consistent-return
+		return next();
+	}
 }

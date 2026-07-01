@@ -1,0 +1,99 @@
+{
+	"$schema": "./node_modules/oxlint/configuration_schema.json",
+	"plugins": ["react", "jsx-a11y", "unicorn", "typescript", "oxc", "eslint"],
+	"jsPlugins": ["@adonisjs/eslint-plugin"],
+	"categories": {
+		"correctness": "error",
+		"suspicious": "error",
+		"pedantic": "off",
+		"perf": "error",
+		"restriction": "error",
+		"nursery": "error"
+	},
+	"options": {
+		"typeAware": true
+	},
+	"env": {
+		"builtin": true,
+		"es2026": true,
+		"browser": true,
+		"node": true
+	},
+	"settings": {
+		"react": {
+			"version": "19.2.6"
+		}
+	},
+	"ignorePatterns": [
+		"*.min.*",
+		"*.d.ts",
+		"CHANGELOG.md",
+		"LICENSE*",
+		"output/**",
+		"coverage/**",
+		"temp/**",
+		".yalc/**",
+		"pnpm-lock.yaml",
+		"yarn.lock",
+		"package-lock.json",
+		"node_modules",
+		"build",
+		"dist",
+		"database/schema.ts",
+		"routeTree.gen.ts",
+		"public/assets/**",
+		"__snapshots__/**",
+		"resources/**",
+		".adonisjs/**"
+	],
+	"rules": {
+		"no-async-await": "off",
+		"no-optional-chaining": "off",
+		"no-rest-spread-properties": "off",
+		"react/jsx-filename-extension": "off",
+		"react/jsx-no-literals": "off",
+		"react/react-in-jsx-scope": "off",
+		"class-methods-use-this": "off",
+		"no-await-in-loop": "off",
+		"no-undefined": "off",
+		"no-void": "off",
+		"typescript/explicit-function-return-type": "off",
+		"typescript/explicit-module-boundary-types": "off",
+		"typescript/no-empty-object-type": "off",
+		"typescript/no-unsafe-type-assertion": "off",
+		"typescript/explicit-member-accessibility": [
+			"error",
+			{
+				"accessibility": "no-public"
+			}
+		],
+		"@adonisjs/prefer-lazy-controller-import": "error",
+		"@adonisjs/prefer-lazy-listener-import": "error",
+		"react/rules-of-hooks": "error",
+		"@typescript-eslint/no-floating-promises": [
+			"error",
+			{
+				"allowForKnownSafePromises": [
+					{
+						"from": "package",
+						"package": "@adonisjs/lucid",
+						"name": [
+							"ExcutableQueryBuilderContract",
+							"ModelQueryBuilderContract",
+							"DatabaseQueryBuilderContract",
+							"InsertQueryBuilderContract",
+							"RawQueryBuilderContract",
+							"ChainableContract",
+							"RelationQueryBuilderContract",
+							"RelationSubQueryBuilderContract",
+							"HasManyQueryBuilderContract",
+							"HasManyThroughQueryBuilderContract",
+							"ManyToManyQueryBuilderContract",
+							"ManyToManySubQueryBuilderContract"
+						]
+					}
+				]
+			}
+		]
+	}
+}
