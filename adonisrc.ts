@@ -1,8 +1,8 @@
 // oxlint-disable typescript/promise-function-async
 
-import { indexPages } from '@adonisjs/inertia';
 import { indexEntities } from '@adonisjs/core';
 import { defineConfig } from '@adonisjs/core/app';
+import { indexPages } from '@adonisjs/inertia';
 import { generateRegistry } from '@tuyau/core/hooks';
 
 export default defineConfig({

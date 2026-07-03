@@ -1,7 +1,7 @@
 // oxlint-disable typescript/promise-function-async
 
-import app from '@adonisjs/core/services/app';
 import { type HttpContext, ExceptionHandler } from '@adonisjs/core/http';
+import app from '@adonisjs/core/services/app';
 import type { StatusPageRange, StatusPageRenderer } from '@adonisjs/core/types/http';
 
 export default class HttpExceptionHandler extends ExceptionHandler {

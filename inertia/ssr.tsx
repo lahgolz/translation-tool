@@ -1,11 +1,12 @@
-import { client } from '~/client';
-import type { ReactElement } from 'react';
-import Layout from '~/layouts/default';
-import type { Data } from '@generated/data';
-import ReactDOMServer from 'react-dom/server';
-import { createInertiaApp } from '@inertiajs/react';
-import { TuyauProvider } from '@adonisjs/inertia/react';
 import { resolvePageComponent } from '@adonisjs/inertia/helpers';
+import { TuyauProvider } from '@adonisjs/inertia/react';
+import type { Data } from '@generated/data';
+import { createInertiaApp } from '@inertiajs/react';
+import type { ReactElement } from 'react';
+import ReactDOMServer from 'react-dom/server';
+
+import { client } from '~/client';
+import Layout from '~/layouts/default';
 
 // oxlint-disable typescript/no-explicit-any
 export default async function render(page: any) {
