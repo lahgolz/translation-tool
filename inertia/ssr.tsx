@@ -1,9 +1,10 @@
 import { resolvePageComponent } from '@adonisjs/inertia/helpers';
 import { TuyauProvider } from '@adonisjs/inertia/react';
-import type { Data } from '@generated/data';
 import { createInertiaApp } from '@inertiajs/react';
 import type { ReactElement } from 'react';
 import ReactDOMServer from 'react-dom/server';
+
+import type { Data } from '#generated/data';
 
 import { client } from '~/client';
 import Layout from '~/layouts/default';

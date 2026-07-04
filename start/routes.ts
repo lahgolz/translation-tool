@@ -7,9 +7,9 @@
 |
 */
 
-import { controllers } from '#generated/controllers';
 import router from '@adonisjs/core/services/router';
 
+import { controllers } from '#generated/controllers';
 import { middleware } from '#start/kernel';
 
 router.on('/').renderInertia('home', {}).as('home');

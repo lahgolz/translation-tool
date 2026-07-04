@@ -1,8 +1,9 @@
 import { Form, Link } from '@adonisjs/inertia/react';
-import type { Data } from '@generated/data';
 import { usePage } from '@inertiajs/react';
 import { type ReactElement, useEffect } from 'react';
 import { toast, Toaster } from 'sonner';
+
+import type { Data } from '#generated/data';
 
 export default function Layout({ children }: { children: ReactElement<Data.SharedProps> }) {
 	const { url } = usePage();
