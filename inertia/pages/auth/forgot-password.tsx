@@ -5,18 +5,18 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/com
 import { Field, FieldError, FieldGroup, FieldLabel } from '~/components/ui/field';
 import { Input } from '~/components/ui/input';
 
-export default function Login() {
+export default function ForgotPassword() {
 	return (
 		<div className="flex min-h-svh items-center justify-center p-6">
 			<div className="w-full max-w-sm">
 				<Card>
 					<CardHeader>
-						<CardTitle>Login</CardTitle>
-						<CardDescription>Enter your details below to login to your account</CardDescription>
+						<CardTitle>Forgot password</CardTitle>
+						<CardDescription>Enter your email and we&apos;ll send you a link to reset your password</CardDescription>
 					</CardHeader>
 
 					<CardContent>
-						<Form route="session.store">
+						<Form route="password_resets.store">
 							{({ errors, processing }) => (
 								<FieldGroup>
 									<Field data-invalid={errors.email ? true : undefined}>
@@ -31,24 +31,12 @@ export default function Login() {
 										{errors.email && <FieldError>{errors.email}</FieldError>}
 									</Field>
 
-									<Field data-invalid={errors.password ? true : undefined}>
-										<FieldLabel htmlFor="password">Password</FieldLabel>
-										<Input
-											id="password"
-											name="password"
-											type="password"
-											autoComplete="current-password"
-											aria-invalid={errors.password ? true : undefined}
-										/>
-										{errors.password && <FieldError>{errors.password}</FieldError>}
-									</Field>
-
 									<Button type="submit" disabled={processing}>
-										Login
+										Send reset link
 									</Button>
 
 									<p className="text-center text-sm underline underline-offset-4">
-										<Link route="password_resets.create">Forgot password?</Link>
+										<Link route="session.create">Back to login</Link>
 									</p>
 								</FieldGroup>
 							)}

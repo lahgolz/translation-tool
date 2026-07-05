@@ -7,18 +7,28 @@ export type ScannedRoutes = {
     'home': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
     'session.store': { paramsTuple?: []; params?: {} }
+    'password_resets.create': { paramsTuple?: []; params?: {} }
+    'password_resets.store': { paramsTuple?: []; params?: {} }
+    'password_resets.edit': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
+    'password_resets.update': { paramsTuple?: []; params?: {} }
     'session.destroy': { paramsTuple?: []; params?: {} }
   }
   GET: {
     'home': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
+    'password_resets.create': { paramsTuple?: []; params?: {} }
+    'password_resets.edit': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
   }
   HEAD: {
     'home': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
+    'password_resets.create': { paramsTuple?: []; params?: {} }
+    'password_resets.edit': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
   }
   POST: {
     'session.store': { paramsTuple?: []; params?: {} }
+    'password_resets.store': { paramsTuple?: []; params?: {} }
+    'password_resets.update': { paramsTuple?: []; params?: {} }
     'session.destroy': { paramsTuple?: []; params?: {} }
   }
 }

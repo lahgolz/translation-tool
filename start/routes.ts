@@ -18,6 +18,11 @@ router
 	.group(() => {
 		router.get('login', [controllers.Session, 'create']);
 		router.post('login', [controllers.Session, 'store']);
+
+		router.get('forgot-password', [controllers.PasswordResets, 'create']);
+		router.post('forgot-password', [controllers.PasswordResets, 'store']);
+		router.get('reset-password/:token', [controllers.PasswordResets, 'edit']);
+		router.post('reset-password', [controllers.PasswordResets, 'update']);
 	})
 	.use(middleware.guest());
 

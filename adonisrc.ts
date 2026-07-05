@@ -102,7 +102,7 @@ export default defineConfig({
 				timeout: 300_000,
 			},
 		],
-		forceExit: false,
+		forceExit: true,
 	},
 
 	/*

@@ -4,5 +4,6 @@
  */
 
 export const controllers = {
+  PasswordResets: () => import('#controllers/password_resets_controller'),
   Session: () => import('#controllers/session_controller'),
 }

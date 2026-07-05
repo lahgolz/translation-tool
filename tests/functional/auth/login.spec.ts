@@ -47,6 +47,40 @@ test.group('Session / login', (group) => {
 		response.assertFlashMessage('error', 'Invalid email or password');
 	});
 
+	test('rejects credentials for an email that does not exist', async ({ client }) => {
+		const response = await client
+			.post('/login')
+			.redirects(0)
+			.withCsrfToken()
+			.form({ email: 'nobody@example.com', password: 'secret123' });
+
+		response.assertSessionMissing('auth_web');
+		response.assertFlashMessage('error', 'Invalid email or password');
+	});
+
+	test('redirects an authenticated user submitting the login form', async ({ client }) => {
+		const user = await User.create({ email: 'admin@example.com', password: 'secret123' });
+
+		const response = await client
+			.post('/login')
+			.redirects(0)
+			.withCsrfToken()
+			.loginAs(user)
+			.form({ email: 'admin@example.com', password: 'secret123' });
+
+		response.assertHeader('location', '/');
+	});
+
+	test('rejects a login request without a CSRF token', async ({ client }) => {
+		const response = await client
+			.post('/login')
+			.redirects(0)
+			.form({ email: 'admin@example.com', password: 'secret123' });
+
+		response.assertStatus(302);
+		response.assertSessionMissing('auth_web');
+	});
+
 	test('requires a valid email and a password', async ({ client }) => {
 		const response = await client
 			.post('/login')

@@ -4,22 +4,39 @@
  * Run "node ace migration:run" command to re-generate this file
  */
 
-import { BaseModel, column } from '@adonisjs/lucid/orm';
-import { DateTime } from 'luxon';
+import { BaseModel, column } from '@adonisjs/lucid/orm'
+import { DateTime } from 'luxon'
+
+export class TokenSchema extends BaseModel {
+  static $columns = ['createdAt', 'expiresAt', 'id', 'token', 'type', 'userId'] as const
+  $columns = TokenSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column.dateTime()
+  declare expiresAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare token: string
+  @column()
+  declare type: string
+  @column()
+  declare userId: number
+}
 
 export class UserSchema extends BaseModel {
-	static $columns = ['createdAt', 'email', 'id', 'name', 'password', 'updatedAt'] as const;
-	$columns = UserSchema.$columns;
-	@column.dateTime({ autoCreate: true })
-	declare createdAt: DateTime;
-	@column()
-	declare email: string;
-	@column({ isPrimary: true })
-	declare id: number;
-	@column()
-	declare name: string | null;
-	@column({ serializeAs: null })
-	declare password: string;
-	@column.dateTime({ autoCreate: true, autoUpdate: true })
-	declare updatedAt: DateTime | null;
+  static $columns = ['createdAt', 'email', 'id', 'name', 'password', 'updatedAt'] as const
+  $columns = UserSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare email: string
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare name: string | null
+  @column({ serializeAs: null })
+  declare password: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
 }
