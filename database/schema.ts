@@ -5,19 +5,19 @@
  */
 
 import { BaseModel, column } from '@adonisjs/lucid/orm';
-import type { DateTime } from 'luxon';
+import { DateTime } from 'luxon';
 
 export class UserSchema extends BaseModel {
-	static $columns = ['createdAt', 'email', 'fullName', 'id', 'password', 'updatedAt'] as const;
+	static $columns = ['createdAt', 'email', 'id', 'name', 'password', 'updatedAt'] as const;
 	$columns = UserSchema.$columns;
 	@column.dateTime({ autoCreate: true })
 	declare createdAt: DateTime;
 	@column()
 	declare email: string;
-	@column()
-	declare fullName: string | null;
 	@column({ isPrimary: true })
 	declare id: number;
+	@column()
+	declare name: string | null;
 	@column({ serializeAs: null })
 	declare password: string;
 	@column.dateTime({ autoCreate: true, autoUpdate: true })

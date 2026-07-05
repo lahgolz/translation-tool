@@ -12,18 +12,6 @@ const routes = {
     tokens: [{"old":"/","type":0,"val":"/","end":""}],
     types: placeholder as Registry['home']['types'],
   },
-  'new_account.create': {
-    methods: ["GET","HEAD"],
-    pattern: '/signup',
-    tokens: [{"old":"/signup","type":0,"val":"signup","end":""}],
-    types: placeholder as Registry['new_account.create']['types'],
-  },
-  'new_account.store': {
-    methods: ["POST"],
-    pattern: '/signup',
-    tokens: [{"old":"/signup","type":0,"val":"signup","end":""}],
-    types: placeholder as Registry['new_account.store']['types'],
-  },
   'session.create': {
     methods: ["GET","HEAD"],
     pattern: '/login',

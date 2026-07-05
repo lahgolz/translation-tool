@@ -1,17 +1,31 @@
+import { errors } from '@adonisjs/auth';
 import type { HttpContext } from '@adonisjs/core/http';
 
 import User from '#models/user';
+import { loginValidator } from '#validators/user';
 
 export default class SessionController {
 	async create({ inertia }: HttpContext) {
 		return inertia.render('auth/login', {});
 	}
 
-	async store({ request, auth, response }: HttpContext) {
-		const { email, password } = request.all();
-		const user = await User.verifyCredentials(email, password);
+	async store({ request, auth, response, session }: HttpContext) {
+		const { email, password } = await request.validateUsing(loginValidator);
 
-		await auth.use('web').login(user);
+		try {
+			const user = await User.verifyCredentials(email, password);
+
+			await auth.use('web').login(user);
+		} catch (error) {
+			if (!(error instanceof errors.E_INVALID_CREDENTIALS)) {
+				throw error;
+			}
+
+			session.flash('error', 'Invalid email or password');
+			response.redirect().back();
+
+			return;
+		}
 
 		response.redirect().toRoute('home');
 	}

@@ -4,11 +4,12 @@ services:
     ports:
       - '${DB_PORT:-5432}:5432'
     environment:
+      PGPASSWORD: '${DB_PGPASSWORD:-secret}'
       POSTGRES_DB: '${DB_DATABASE:-database}'
       POSTGRES_USER: '${DB_USER:-user}'
       POSTGRES_PASSWORD: '${DB_PASSWORD:-password}'
     volumes:
-      - 'sailpgsql:/var/lib/postgresql/data'
+      - 'sailpgsql:/var/lib/postgresql/18/docker'
     networks:
       - sail
     healthcheck:

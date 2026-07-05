@@ -44,7 +44,8 @@
 		"public/assets/**",
 		"__snapshots__/**",
 		"resources/**",
-		".adonisjs/**"
+		".adonisjs/**",
+		"inertia/components/ui/**"
 	],
 	"rules": {
 		"no-async-await": "off",
@@ -95,5 +96,13 @@
 				]
 			}
 		]
-	}
+	},
+	"overrides": [
+		{
+			"files": ["tests/browser/**/*.spec.ts"],
+			"rules": {
+				"typescript/unbound-method": "off"
+			}
+		}
+	]
 }

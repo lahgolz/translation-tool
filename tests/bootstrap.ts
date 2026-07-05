@@ -27,7 +27,7 @@ import { logBrowser } from '#test-helpers/log-browser';
  */
 export const plugins: Config['plugins'] = [
 	assert(),
-	pluginAdonisJS(app),
+	pluginAdonisJS(app, { baseURL: 'http://localhost:3333' }),
 	apiClient(),
 	inertiaApiClient(app),
 	sessionApiClient(app),

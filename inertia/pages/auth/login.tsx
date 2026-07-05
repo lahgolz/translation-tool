@@ -1,43 +1,56 @@
 import { Form } from '@adonisjs/inertia/react';
 
+import { Button } from '~/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
+import { Field, FieldError, FieldGroup, FieldLabel } from '~/components/ui/field';
+import { Input } from '~/components/ui/input';
+
 export default function Login() {
 	return (
-		<div className="form-container">
-			<div>
-				<h1> Login </h1>
-				<p>Enter your details below to login to your account</p>
-			</div>
+		<div className="flex min-h-svh items-center justify-center p-6">
+			<div className="w-full max-w-sm">
+				<Card>
+					<CardHeader>
+						<CardTitle>Login</CardTitle>
+						<CardDescription>Enter your details below to login to your account</CardDescription>
+					</CardHeader>
 
-			<div>
-				<Form route="session.store">
-					{({ errors }) => (
-						<>
-							<div>
-								<label htmlFor="email">Email</label>
-								<input
-									type="email"
-									name="email"
-									id="email"
-									autoComplete="username"
-									data-invalid={errors.email ? 'true' : undefined}
-								/>
-								{errors.email && <div>{errors.email}</div>}
-							</div>
+					<CardContent>
+						<Form route="session.store">
+							{({ errors, processing }) => (
+								<FieldGroup>
+									<Field data-invalid={errors.email ? true : undefined}>
+										<FieldLabel htmlFor="email">Email</FieldLabel>
+										<Input
+											id="email"
+											name="email"
+											type="email"
+											autoComplete="username"
+											aria-invalid={errors.email ? true : undefined}
+										/>
+										{errors.email && <FieldError>{errors.email}</FieldError>}
+									</Field>
 
-							<div>
-								<label htmlFor="password">Password</label>
-								<input type="password" name="password" id="password" autoComplete="current-password" />
-								{errors.password ? <span>{errors.password}</span> : ''}
-							</div>
+									<Field data-invalid={errors.password ? true : undefined}>
+										<FieldLabel htmlFor="password">Password</FieldLabel>
+										<Input
+											id="password"
+											name="password"
+											type="password"
+											autoComplete="current-password"
+											aria-invalid={errors.password ? true : undefined}
+										/>
+										{errors.password && <FieldError>{errors.password}</FieldError>}
+									</Field>
 
-							<div>
-								<button type="submit" className="button">
-									Login
-								</button>
-							</div>
-						</>
-					)}
-				</Form>
+									<Button type="submit" disabled={processing}>
+										Login
+									</Button>
+								</FieldGroup>
+							)}
+						</Form>
+					</CardContent>
+				</Card>
 			</div>
 		</div>
 	);

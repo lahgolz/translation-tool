@@ -26,9 +26,14 @@ export default await Env.create(new URL('../', import.meta.url), {
 	SESSION_DRIVER: Env.schema.enum(['cookie', 'memory', 'database'] as const),
 
 	// Database
+	DB_CONNECTION: Env.schema.enum(['sqlite', 'pg'] as const),
 	DB_HOST: Env.schema.string({ format: 'host' }),
 	DB_PORT: Env.schema.number(),
 	DB_USER: Env.schema.string(),
 	DB_PASSWORD: Env.schema.string.optional(),
 	DB_DATABASE: Env.schema.string(),
+
+	// Default admin
+	DEFAULT_ADMIN_EMAIL: Env.schema.string({ format: 'email' }),
+	DEFAULT_ADMIN_PASSWORD: Env.schema.string(),
 });

@@ -42,7 +42,8 @@
 		"format": "oxfmt .",
 		"typecheck": "tsc --noEmit && tsc --noEmit --project inertia/tsconfig.json",
 		"postinstall": "husky",
-		"prepare": "husky"
+		"prepare": "husky",
+		"ace": "node ace"
 	},
 	"dependencies": {
 		"@adonisjs/auth": "^10.1.0",
