@@ -1,5 +1,5 @@
-import mail from '@adonisjs/mail/services/main';
 import testUtils from '@adonisjs/core/services/test_utils';
+import mail from '@adonisjs/mail/services/main';
 import { test } from '@japa/runner';
 import { timeTravel } from '@japa/runner';
 

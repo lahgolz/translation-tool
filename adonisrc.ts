@@ -63,6 +63,7 @@ export default defineConfig({
 		() => import('@adonisjs/auth/auth_provider'),
 		() => import('#providers/api_provider'),
 		() => import('@adonisjs/mail/mail_provider'),
+		() => import('@holoyan/adonisjs-permissions/role_permission_provider'),
 	],
 
 	/*

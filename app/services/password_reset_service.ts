@@ -1,8 +1,7 @@
-import { randomBytes, createHash } from 'node:crypto';
-
 import { urlFor } from '@adonisjs/core/services/url_builder';
 import mail from '@adonisjs/mail/services/main';
 import { DateTime } from 'luxon';
+import { randomBytes, createHash } from 'node:crypto';
 
 import ResetPasswordNotification from '#mails/reset_password_notification';
 import Token, { TokenType } from '#models/token';
