@@ -1,6 +1,6 @@
 import { BaseMail } from '@adonisjs/mail';
 
-import type User from '#models/user';
+import type User from '#users/models/user';
 
 export default class ResetPasswordNotification extends BaseMail {
 	subject = 'Reset your password';

@@ -33,6 +33,7 @@ export default defineConfig({
 		() => import('@adonisjs/session/commands'),
 		() => import('@adonisjs/inertia/commands'),
 		() => import('@adonisjs/mail/commands'),
+		() => import('@adonisjs-community/modules/commands'),
 	],
 
 	/*
@@ -74,7 +75,12 @@ export default defineConfig({
 | List of modules to import before starting the application.
 |
 */
-	preloads: [() => import('#start/routes'), () => import('#start/kernel'), () => import('#start/validator')],
+	preloads: [
+		() => import('#start/routes'),
+		() => import('#start/kernel'),
+		() => import('#start/validator'),
+		() => import('#auth/routes'),
+	],
 
 	/*
 |--------------------------------------------------------------------------
@@ -88,17 +94,17 @@ export default defineConfig({
 	tests: {
 		suites: [
 			{
-				files: ['tests/unit/**/*.spec.{ts,js}'],
+				files: ['app/**/tests/unit/**/*.spec.{ts,js}'],
 				name: 'unit',
 				timeout: 2000,
 			},
 			{
-				files: ['tests/functional/**/*.spec.{ts,js}'],
+				files: ['app/**/tests/functional/**/*.spec.{ts,js}'],
 				name: 'functional',
 				timeout: 30_000,
 			},
 			{
-				files: ['tests/browser/**/*.spec.{ts,js}'],
+				files: ['app/**/tests/browser/**/*.spec.{ts,js}'],
 				name: 'browser',
 				timeout: 300_000,
 			},

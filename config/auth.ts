@@ -19,7 +19,7 @@ const authConfig = defineConfig({
 			useRememberMeTokens: false,
 
 			provider: sessionUserProvider({
-				model: async () => import('#models/user'),
+				model: async () => import('#users/models/user'),
 			}),
 		}),
 	},

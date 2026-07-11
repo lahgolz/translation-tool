@@ -3,9 +3,10 @@ import mail from '@adonisjs/mail/services/main';
 import { test } from '@japa/runner';
 import { timeTravel } from '@japa/runner';
 
-import ResetPasswordNotification from '#mails/reset_password_notification';
-import User from '#models/user';
-import passwordResetService from '#services/password_reset_service';
+import User from '#users/models/user';
+
+import ResetPasswordNotification from '../../mails/reset_password_notification.ts';
+import passwordResetService from '../../services/password_reset_service.ts';
 
 test.group('Password reset', (group) => {
 	group.each.setup(async () => testUtils.db().wrapInGlobalTransaction());

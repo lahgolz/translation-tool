@@ -2,7 +2,7 @@ import { belongsTo } from '@adonisjs/lucid/orm';
 import type { BelongsTo } from '@adonisjs/lucid/types/relations';
 
 import { TokenSchema } from '#database/schema';
-import User from '#models/user';
+import User from '#users/models/user';
 
 export const TokenType = {
 	PasswordReset: 'password_reset',

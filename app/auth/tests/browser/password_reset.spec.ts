@@ -1,8 +1,11 @@
+/* oxlint-disable unbound-method */
+
 import testUtils from '@adonisjs/core/services/test_utils';
 import { test } from '@japa/runner';
 
-import User from '#models/user';
-import passwordResetService from '#services/password_reset_service';
+import User from '#users/models/user';
+
+import passwordResetService from '../../services/password_reset_service.ts';
 
 test.group('Password reset (browser)', (group) => {
 	group.each.setup(async () => testUtils.db().wrapInGlobalTransaction());

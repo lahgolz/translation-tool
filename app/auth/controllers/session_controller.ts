@@ -1,8 +1,9 @@
 import { errors } from '@adonisjs/auth';
 import type { HttpContext } from '@adonisjs/core/http';
 
-import User from '#models/user';
-import { loginValidator } from '#validators/user';
+import User from '#users/models/user';
+
+import { loginValidator } from '../validators/user.ts';
 
 export default class SessionController {
 	async create({ inertia }: HttpContext) {

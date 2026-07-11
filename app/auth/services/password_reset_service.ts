@@ -3,10 +3,11 @@ import mail from '@adonisjs/mail/services/main';
 import { DateTime } from 'luxon';
 import { randomBytes, createHash } from 'node:crypto';
 
-import ResetPasswordNotification from '#mails/reset_password_notification';
-import Token, { TokenType } from '#models/token';
-import User from '#models/user';
+import Token, { TokenType } from '#common/models/token';
 import env from '#start/env';
+import User from '#users/models/user';
+
+import ResetPasswordNotification from '../mails/reset_password_notification.ts';
 
 const TOKEN_TTL_MINUTES = 60;
 

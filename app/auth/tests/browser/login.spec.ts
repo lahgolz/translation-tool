@@ -1,7 +1,9 @@
+/* oxlint-disable unbound-method */
+
 import testUtils from '@adonisjs/core/services/test_utils';
 import { test } from '@japa/runner';
 
-import User from '#models/user';
+import User from '#users/models/user';
 
 test.group('Session / login (browser)', (group) => {
 	group.each.setup(async () => testUtils.db().wrapInGlobalTransaction());

@@ -9,13 +9,17 @@ declare module '@adonisjs/core/http' {
 }
 
 export default class AclMiddleware {
-	async handle(context: HttpContext, next: NextFn, options: { permission: string }) {
+	async handle(context: HttpContext, next: NextFn, permission: string) {
 		const user = context.auth.user;
 		const isAdmin = await user?.hasRole('admin');
-		const hasPermission = await user?.hasPermission(options.permission);
+		const hasPermission = await user?.hasPermission(permission);
 
 		if (!isAdmin && !hasPermission) {
-			context.response.redirect().toRoute('home');
+			if (context.request.method() === 'GET') {
+				return context.response.redirect().toRoute('home');
+			}
+
+			return context.response.abort({ message: 'Forbidden' }, 403);
 		}
 
 		return next();

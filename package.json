@@ -7,7 +7,6 @@
 	"imports": {
 		"#auth/*": "./app/auth/*.js",
 		"#common/*": "./app/common/*.js",
-		"#organizations/*": "./app/organizations/*.js",
 		"#permissions/*": "./app/permissions/*.js",
 		"#users/*": "./app/users/*.js",
 		"#database/*": "./database/*.js",
