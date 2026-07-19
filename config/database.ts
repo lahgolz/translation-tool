@@ -47,7 +47,7 @@ const dbConfig = defineConfig({
 			client: 'better-sqlite3',
 
 			connection: {
-				filename: app.tmpPath('db.sqlite3'),
+				filename: app.tmpPath(env.get('DB_FILENAME', 'db.sqlite3')),
 			},
 
 			/**

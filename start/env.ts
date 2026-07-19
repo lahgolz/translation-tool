@@ -32,6 +32,7 @@ export default await Env.create(new URL('../', import.meta.url), {
 	DB_USER: Env.schema.string.optional(),
 	DB_PASSWORD: Env.schema.string.optional(),
 	DB_DATABASE: Env.schema.string.optional(),
+	DB_FILENAME: Env.schema.string.optional(),
 
 	// Default admin
 	DEFAULT_ADMIN_EMAIL: Env.schema.string({ format: 'email' }),

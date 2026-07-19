@@ -1,0 +1,69 @@
+name: Tests
+on:
+  push:
+    branches:
+      - '*'
+    paths-ignore:
+      - '*.{md,txt}'
+      - LICENSE
+      - .*config
+    tags-ignore:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+    paths-ignore:
+      - '*.{md,txt}'
+      - LICENSE
+      - .*config
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        test-mode: [functional, chromium, firefox, webkit]
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v7
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          run_install: false
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm i --frozen-lockfile
+
+      - name: Create .env file
+        run: |
+          echo "${{ secrets.ENV_TEST }}" > .env
+          echo "DB_FILENAME=${{ matrix.test-mode }}.sqlite3" >> .env
+
+      - name: ${{ matrix.test-mode != 'functional' && format('Install playwright {0} browser', matrix.test-mode) || 'Skipped' }}
+        if: ${{ matrix.test-mode != 'functional' }}
+        run: pnpm exec playwright install --with-deps ${{ matrix.test-mode }}
+
+      - name: Run migrations
+        run: pnpm ace migration:run
+
+      - name: Seed database
+        run: pnpm ace db:seed
+
+      - name: Run tests
+        run: pnpm test:${{ matrix.test-mode }}
+
+      - uses: actions/upload-artifact@v7
+        if: ${{ matrix.test-mode != 'functional' && always() && hashFiles('tests/traces/browser/*.zip') != '' }}
+        with:
+          name: playwright-traces-${{ matrix.test-mode }}
+          path: tests/traces/browser/
+          retention-days: 30
