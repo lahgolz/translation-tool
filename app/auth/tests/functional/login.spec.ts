@@ -14,7 +14,7 @@ test.group('Session / login', (group) => {
 	});
 
 	test('redirects an authenticated user away from the login page', async ({ client }) => {
-		const user = await User.create({ email: 'admin@example.com', password: 'secret123' });
+		const user = await User.create({ email: 'test@example.com', password: 'secret123' });
 
 		const response = await client.get('/login').loginAs(user);
 
@@ -22,26 +22,26 @@ test.group('Session / login', (group) => {
 	});
 
 	test('logs in with valid credentials', async ({ client }) => {
-		const user = await User.create({ email: 'admin@example.com', password: 'secret123' });
+		const user = await User.create({ email: 'test@example.com', password: 'secret123' });
 
 		const response = await client
 			.post('/login')
 			.redirects(0)
 			.withCsrfToken()
-			.form({ email: 'admin@example.com', password: 'secret123' });
+			.form({ email: 'test@example.com', password: 'secret123' });
 
 		response.assertHeader('location', '/projects');
 		response.assertSession('auth_web', user.id);
 	});
 
 	test('rejects invalid credentials', async ({ client }) => {
-		await User.create({ email: 'admin@example.com', password: 'secret123' });
+		await User.create({ email: 'test@example.com', password: 'secret123' });
 
 		const response = await client
 			.post('/login')
 			.redirects(0)
 			.withCsrfToken()
-			.form({ email: 'admin@example.com', password: 'wrong-password' });
+			.form({ email: 'test@example.com', password: 'wrong-password' });
 
 		response.assertSessionMissing('auth_web');
 		response.assertFlashMessage('error', 'Invalid email or password');
@@ -59,14 +59,14 @@ test.group('Session / login', (group) => {
 	});
 
 	test('redirects an authenticated user submitting the login form', async ({ client }) => {
-		const user = await User.create({ email: 'admin@example.com', password: 'secret123' });
+		const user = await User.create({ email: 'test@example.com', password: 'secret123' });
 
 		const response = await client
 			.post('/login')
 			.redirects(0)
 			.withCsrfToken()
 			.loginAs(user)
-			.form({ email: 'admin@example.com', password: 'secret123' });
+			.form({ email: 'test@example.com', password: 'secret123' });
 
 		response.assertHeader('location', '/');
 	});
@@ -75,7 +75,7 @@ test.group('Session / login', (group) => {
 		const response = await client
 			.post('/login')
 			.redirects(0)
-			.form({ email: 'admin@example.com', password: 'secret123' });
+			.form({ email: 'test@example.com', password: 'secret123' });
 
 		response.assertStatus(302);
 		response.assertSessionMissing('auth_web');
@@ -98,7 +98,7 @@ test.group('Session / login', (group) => {
 	});
 
 	test('logs out an authenticated user', async ({ client }) => {
-		const user = await User.create({ email: 'admin@example.com', password: 'secret123' });
+		const user = await User.create({ email: 'test@example.com', password: 'secret123' });
 
 		const response = await client.post('/logout').redirects(0).withCsrfToken().loginAs(user);
 

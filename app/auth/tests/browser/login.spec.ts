@@ -9,12 +9,12 @@ test.group('Session / login (browser)', (group) => {
 	group.each.setup(async () => testUtils.db().wrapInGlobalTransaction());
 
 	test('logs in with valid credentials', async ({ visit, route }) => {
-		const user = await User.create({ email: 'admin@example.com', password: 'secret123' });
+		const user = await User.create({ email: 'test@example.com', password: 'secret123' });
 		await user.allow('project.view');
 
 		const page = await visit(route('session.create'));
 
-		await page.getByLabel('Email').fill('admin@example.com');
+		await page.getByLabel('Email').fill('test@example.com');
 		await page.getByLabel('Password').fill('secret123');
 		await page.getByRole('button', { name: 'Login' }).click();
 
@@ -22,11 +22,11 @@ test.group('Session / login (browser)', (group) => {
 	});
 
 	test('shows an error for invalid credentials', async ({ visit, route }) => {
-		await User.create({ email: 'admin@example.com', password: 'secret123' });
+		await User.create({ email: 'test@example.com', password: 'secret123' });
 
 		const page = await visit(route('session.create'));
 
-		await page.getByLabel('Email').fill('admin@example.com');
+		await page.getByLabel('Email').fill('test@example.com');
 		await page.getByLabel('Password').fill('wrong-password');
 		await page.getByRole('button', { name: 'Login' }).click();
 
@@ -37,19 +37,19 @@ test.group('Session / login (browser)', (group) => {
 	test('shows a validation error for a missing password', async ({ visit, route }) => {
 		const page = await visit(route('session.create'));
 
-		await page.getByLabel('Email').fill('admin@example.com');
+		await page.getByLabel('Email').fill('test@example.com');
 		await page.getByRole('button', { name: 'Login' }).click();
 
 		await page.assertTextContains('body', 'The password field must be defined');
 	});
 
 	test('redirects an authenticated user away from the login page', async ({ visit, route }) => {
-		const user = await User.create({ email: 'admin@example.com', password: 'secret123' });
+		const user = await User.create({ email: 'test@example.com', password: 'secret123' });
 		await user.allow('project.view');
 
 		const page = await visit(route('session.create'));
 
-		await page.getByLabel('Email').fill('admin@example.com');
+		await page.getByLabel('Email').fill('test@example.com');
 		await page.getByLabel('Password').fill('secret123');
 		await page.getByRole('button', { name: 'Login' }).click();
 		await page.assertPath('/projects');

@@ -27,7 +27,7 @@ test.group('Password reset', (group) => {
 	});
 
 	test('redirects an authenticated user away from the forgot password page', async ({ client }) => {
-		const user = await User.create({ email: 'admin@example.com', password: 'secret123' });
+		const user = await User.create({ email: 'test@example.com', password: 'secret123' });
 
 		const response = await client.get('/forgot-password').loginAs(user);
 
@@ -35,7 +35,7 @@ test.group('Password reset', (group) => {
 	});
 
 	test('redirects an authenticated user away from the reset password page', async ({ client }) => {
-		const user = await User.create({ email: 'admin@example.com', password: 'secret123' });
+		const user = await User.create({ email: 'test@example.com', password: 'secret123' });
 
 		const response = await client.get('/reset-password/some-token').loginAs(user);
 
@@ -59,7 +59,7 @@ test.group('Password reset', (group) => {
 
 	test('rejects a forgot password request without a CSRF token', async ({ client }) => {
 		using fake = mail.fake();
-		const user = await User.create({ email: 'admin@example.com', password: 'secret123' });
+		const user = await User.create({ email: 'test@example.com', password: 'secret123' });
 
 		const response = await client.post('/forgot-password').redirects(0).form({ email: user.email });
 
@@ -69,7 +69,7 @@ test.group('Password reset', (group) => {
 
 	test('sends a reset email when the account exists', async ({ client }) => {
 		using fake = mail.fake();
-		const user = await User.create({ email: 'admin@example.com', password: 'secret123' });
+		const user = await User.create({ email: 'test@example.com', password: 'secret123' });
 
 		const response = await client.post('/forgot-password').redirects(0).withCsrfToken().form({ email: user.email });
 
@@ -100,7 +100,7 @@ test.group('Password reset', (group) => {
 
 	test('resets the password with a valid token', async ({ client }) => {
 		using fake = mail.fake();
-		const user = await User.create({ email: 'admin@example.com', password: 'secret123' });
+		const user = await User.create({ email: 'test@example.com', password: 'secret123' });
 
 		await client.post('/forgot-password').withCsrfToken().form({ email: user.email });
 
@@ -127,7 +127,7 @@ test.group('Password reset', (group) => {
 	});
 
 	test('deletes the token so it cannot be reused', async ({ client }) => {
-		const user = await User.create({ email: 'admin@example.com', password: 'secret123' });
+		const user = await User.create({ email: 'test@example.com', password: 'secret123' });
 		const token = await passwordResetService.generateFor(user);
 
 		await client
@@ -146,7 +146,7 @@ test.group('Password reset', (group) => {
 	});
 
 	test('rejects an expired token', async ({ client }) => {
-		const user = await User.create({ email: 'admin@example.com', password: 'secret123' });
+		const user = await User.create({ email: 'test@example.com', password: 'secret123' });
 		const token = await passwordResetService.generateFor(user);
 
 		timeTravel('2 hours');
@@ -173,7 +173,7 @@ test.group('Password reset', (group) => {
 	});
 
 	test('invalidates a previous token when a new reset is requested', async ({ client }) => {
-		const user = await User.create({ email: 'admin@example.com', password: 'secret123' });
+		const user = await User.create({ email: 'test@example.com', password: 'secret123' });
 		const firstToken = await passwordResetService.generateFor(user);
 
 		await client.post('/forgot-password').withCsrfToken().form({ email: user.email });
@@ -189,7 +189,7 @@ test.group('Password reset', (group) => {
 	});
 
 	test('the old password no longer works after a successful reset', async ({ client }) => {
-		const user = await User.create({ email: 'admin@example.com', password: 'secret123' });
+		const user = await User.create({ email: 'test@example.com', password: 'secret123' });
 		const token = await passwordResetService.generateFor(user);
 
 		await client
@@ -208,7 +208,7 @@ test.group('Password reset', (group) => {
 	});
 
 	test('requires the new password to meet the minimum length', async ({ client }) => {
-		const user = await User.create({ email: 'admin@example.com', password: 'secret123' });
+		const user = await User.create({ email: 'test@example.com', password: 'secret123' });
 		const token = await passwordResetService.generateFor(user);
 
 		const response = await client
@@ -226,7 +226,7 @@ test.group('Password reset', (group) => {
 	});
 
 	test('requires the password confirmation to match', async ({ client }) => {
-		const user = await User.create({ email: 'admin@example.com', password: 'secret123' });
+		const user = await User.create({ email: 'test@example.com', password: 'secret123' });
 		const token = await passwordResetService.generateFor(user);
 
 		const response = await client
@@ -244,7 +244,7 @@ test.group('Password reset', (group) => {
 	});
 
 	test('rejects a reset password request without a CSRF token', async ({ client }) => {
-		const user = await User.create({ email: 'admin@example.com', password: 'secret123' });
+		const user = await User.create({ email: 'test@example.com', password: 'secret123' });
 		const token = await passwordResetService.generateFor(user);
 
 		const response = await client

@@ -12,14 +12,14 @@ test.group('Password reset (browser)', (group) => {
 	group.each.setup(async () => testUtils.db().wrapInGlobalTransaction());
 
 	test('requests a reset link from the login page', async ({ visit, route }) => {
-		await User.create({ email: 'admin@example.com', password: 'secret123' });
+		await User.create({ email: 'test@example.com', password: 'secret123' });
 
 		const page = await visit(route('session.create'));
 
 		await page.getByRole('link', { name: 'Forgot password?' }).click();
 		await page.assertPath('/forgot-password');
 
-		await page.getByLabel('Email').fill('admin@example.com');
+		await page.getByLabel('Email').fill('test@example.com');
 		await page.getByRole('button', { name: 'Send reset link' }).click();
 
 		await page.assertTextContains('body', 'If an account exists for that email, we sent a link');
@@ -28,7 +28,7 @@ test.group('Password reset (browser)', (group) => {
 	test('resets the password from the emailed link', async ({ visit, route }) => {
 		hash.fake();
 
-		const user = await User.create({ email: 'admin@example.com', password: 'secret123' });
+		const user = await User.create({ email: 'test@example.com', password: 'secret123' });
 		await user.allow('project.view');
 
 		const token = await passwordResetService.generateFor(user);
@@ -42,7 +42,7 @@ test.group('Password reset (browser)', (group) => {
 		await page.assertPath('/login');
 		await page.assertTextContains('body', 'Your password has been reset');
 
-		await page.getByLabel('Email').fill('admin@example.com');
+		await page.getByLabel('Email').fill('test@example.com');
 		await page.getByLabel('Password').fill('new-secret123');
 		await page.getByRole('button', { name: 'Login' }).click();
 
