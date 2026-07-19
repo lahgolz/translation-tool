@@ -47,6 +47,7 @@ test.group('Password reset', (group) => {
 			.post('/forgot-password')
 			.withInertia()
 			.withCsrfToken()
+			.header('referer', '/forgot-password')
 			.form({ email: 'not-an-email' });
 
 		response.assertInertiaPropsContains({
@@ -214,6 +215,7 @@ test.group('Password reset', (group) => {
 			.post('/reset-password')
 			.withInertia()
 			.withCsrfToken()
+			.header('referer', `/reset-password/${token}`)
 			.form({ token, password: 'short', password_confirmation: 'short' });
 
 		response.assertInertiaPropsContains({
@@ -231,6 +233,7 @@ test.group('Password reset', (group) => {
 			.post('/reset-password')
 			.withInertia()
 			.withCsrfToken()
+			.header('referer', `/reset-password/${token}`)
 			.form({ token, password: 'new-secret123', password_confirmation: 'does-not-match' });
 
 		response.assertInertiaPropsContains({

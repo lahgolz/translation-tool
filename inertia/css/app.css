@@ -169,3 +169,14 @@
 		@apply font-sans;
 	}
 }
+
+/*
+ * Override adonis-inertia-modal unstyled defaults to match the rest of the design system.
+ */
+.im-panel {
+	@apply bg-popover text-popover-foreground ring-foreground/10 rounded-xl p-6 text-sm ring-1;
+}
+
+.im-dialog::backdrop {
+	@apply bg-black/10 supports-backdrop-filter:backdrop-blur-xs;
+}

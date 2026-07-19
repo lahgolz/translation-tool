@@ -1,6 +1,7 @@
 import { resolvePageComponent } from '@adonisjs/inertia/helpers';
 import { TuyauProvider } from '@adonisjs/inertia/react';
 import { createInertiaApp } from '@inertiajs/react';
+import { ModalStackProvider } from 'adonis-inertia-modal/react';
 import type { ReactElement } from 'react';
 import { createRoot } from 'react-dom/client';
 
@@ -10,6 +11,7 @@ import Layout from '~/layouts/default';
 
 import { client } from './client';
 
+import 'adonis-inertia-modal/styles.css';
 import './css/app.css';
 
 const appName: string = import.meta.env.VITE_APP_NAME ?? 'AdonisJS';
@@ -25,7 +27,9 @@ void createInertiaApp({
 	setup({ el: element, App, props }) {
 		createRoot(element).render(
 			<TuyauProvider client={client}>
-				<App {...props} />
+				<ModalStackProvider>
+					<App {...props} />
+				</ModalStackProvider>
 			</TuyauProvider>,
 		);
 	},

@@ -51,6 +51,7 @@
 		"no-async-await": "off",
 		"no-optional-chaining": "off",
 		"no-rest-spread-properties": "off",
+		"react/forbid-component-props": "off",
 		"react/jsx-filename-extension": "off",
 		"react/jsx-no-literals": "off",
 		"react/react-in-jsx-scope": "off",

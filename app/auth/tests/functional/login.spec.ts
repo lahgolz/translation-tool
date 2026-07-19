@@ -30,7 +30,7 @@ test.group('Session / login', (group) => {
 			.withCsrfToken()
 			.form({ email: 'admin@example.com', password: 'secret123' });
 
-		response.assertHeader('location', '/');
+		response.assertHeader('location', '/projects');
 		response.assertSession('auth_web', user.id);
 	});
 
@@ -86,6 +86,7 @@ test.group('Session / login', (group) => {
 			.post('/login')
 			.withInertia()
 			.withCsrfToken()
+			.header('referer', '/login')
 			.form({ email: 'not-an-email', password: '' });
 
 		response.assertInertiaPropsContains({

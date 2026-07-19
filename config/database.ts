@@ -12,14 +12,25 @@ const migrationsConfig = {
 	/**
 	 * Paths containing migration files.
 	 */
-	paths: ['database/migrations', 'app/users/database/migrations', 'app/common/database/migrations'],
+	paths: [
+		'database/migrations',
+		'app/users/database/migrations',
+		'app/common/database/migrations',
+		'app/permissions/database/migrations',
+		'app/projects/database/migrations',
+	],
 };
 
 const seedersConfig = {
 	/**
 	 * Paths containing seeder files.
 	 */
-	paths: ['database/seeders', 'app/users/database/seeders', 'app/common/database/seeders'],
+	paths: [
+		'database/seeders',
+		'app/users/database/seeders',
+		'app/common/database/seeders',
+		'app/permissions/database/seeders',
+	],
 };
 
 const dbConfig = defineConfig({

@@ -32,11 +32,9 @@ export default authConfig;
  * guards.
  */
 declare module '@adonisjs/auth/types' {
-	// oxlint-disable-next-line typescript/no-empty-object-type
 	export interface Authenticators extends InferAuthenticators<typeof authConfig> {}
 }
 
 declare module '@adonisjs/core/types' {
-	// oxlint-disable-next-line typescript/no-empty-object-type
 	interface EventsList extends InferAuthEvents<Authenticators> {}
 }

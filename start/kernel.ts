@@ -41,6 +41,7 @@ router.use([
 	() => import('@adonisjs/shield/shield_middleware'),
 	() => import('@adonisjs/auth/initialize_auth_middleware'),
 	() => import('#auth/middleware/silent_auth_middleware'),
+	() => import('@artian-techs/adonis-breadcrumbs/breadcrumbs_middleware'),
 ]);
 
 /**

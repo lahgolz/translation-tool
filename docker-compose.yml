@@ -30,9 +30,47 @@ services:
       timeout: 10s
       retries: 5
 
+  minio:
+    image: 'minio/minio:latest'
+    ports:
+      - '${FORWARD_MINIO_PORT:-9000}:9000'
+      - '${FORWARD_MINIO_CONSOLE_PORT:-9001}:9001'
+    environment:
+      MINIO_ROOT_USER: '${AWS_ACCESS_KEY_ID:-minioadmin}'
+      MINIO_ROOT_PASSWORD: '${AWS_SECRET_ACCESS_KEY:-minioadmin}'
+    volumes:
+      - 'sailminio:/data'
+    command: server /data --console-address ":9001"
+    networks:
+      - sail
+    healthcheck:
+      test: ['CMD', 'mc', 'ready', 'local']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  minio-init:
+    image: 'minio/mc:latest'
+    depends_on:
+      minio:
+        condition: service_healthy
+    environment:
+      AWS_ACCESS_KEY_ID: '${AWS_ACCESS_KEY_ID:-minioadmin}'
+      AWS_SECRET_ACCESS_KEY: '${AWS_SECRET_ACCESS_KEY:-minioadmin}'
+      S3_BUCKET: '${S3_BUCKET:-translation-tool}'
+    networks:
+      - sail
+    entrypoint: >
+      /bin/sh -c "
+      mc alias set local http://minio:9000 $$AWS_ACCESS_KEY_ID $$AWS_SECRET_ACCESS_KEY &&
+      mc mb --ignore-existing local/$$S3_BUCKET &&
+      mc anonymous set download local/$$S3_BUCKET
+      "
+
 networks:
   sail:
     driver: bridge
 
 volumes:
   sailpgsql:
+  sailminio:

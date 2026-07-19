@@ -65,6 +65,9 @@ export default defineConfig({
 		() => import('#providers/api_provider'),
 		() => import('@adonisjs/mail/mail_provider'),
 		() => import('@holoyan/adonisjs-permissions/role_permission_provider'),
+		() => import('@adonisjs/drive/drive_provider'),
+		() => import('@artian-techs/adonis-breadcrumbs/breadcrumbs_provider'),
+		() => import('adonis-inertia-modal/modal_provider'),
 	],
 
 	/*
@@ -80,6 +83,7 @@ export default defineConfig({
 		() => import('#start/kernel'),
 		() => import('#start/validator'),
 		() => import('#auth/routes'),
+		() => import('#projects/routes'),
 	],
 
 	/*
@@ -135,7 +139,7 @@ export default defineConfig({
 	hooks: {
 		init: [
 			indexEntities({
-				transformers: { enabled: true, withSharedProps: true },
+				transformers: { enabled: true, withSharedProps: true, source: 'app', glob: ['**/transformers/*.ts'] },
 			}),
 			indexPages({ framework: 'react' }),
 			generateRegistry(),

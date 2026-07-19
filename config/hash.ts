@@ -71,6 +71,5 @@ export default hashConfig;
  * in your application.
  */
 declare module '@adonisjs/core/types' {
-	// oxlint-disable-next-line typescript/no-empty-object-type
 	export interface HashersList extends InferHashers<typeof hashConfig> {}
 }

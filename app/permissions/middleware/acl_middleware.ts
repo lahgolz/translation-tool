@@ -15,10 +15,6 @@ export default class AclMiddleware {
 		const hasPermission = await user?.hasPermission(permission);
 
 		if (!isAdmin && !hasPermission) {
-			if (context.request.method() === 'GET') {
-				return context.response.redirect().toRoute('home');
-			}
-
 			return context.response.abort({ message: 'Forbidden' }, 403);
 		}
 

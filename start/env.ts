@@ -27,24 +27,36 @@ export default await Env.create(new URL('../', import.meta.url), {
 
 	// Database
 	DB_CONNECTION: Env.schema.enum(['sqlite', 'pg'] as const),
-	DB_HOST: Env.schema.string({ format: 'host' }),
-	DB_PORT: Env.schema.number(),
-	DB_USER: Env.schema.string(),
+	DB_HOST: Env.schema.string.optional({ format: 'host' }),
+	DB_PORT: Env.schema.number.optional(),
+	DB_USER: Env.schema.string.optional(),
 	DB_PASSWORD: Env.schema.string.optional(),
-	DB_DATABASE: Env.schema.string(),
+	DB_DATABASE: Env.schema.string.optional(),
 
 	// Default admin
 	DEFAULT_ADMIN_EMAIL: Env.schema.string({ format: 'email' }),
 	DEFAULT_ADMIN_PASSWORD: Env.schema.string(),
 
 	/*
-  |----------------------------------------------------------
-  | Variables for configuring the mail package
-  |----------------------------------------------------------
-  */
+|----------------------------------------------------------
+| Variables for configuring the mail package
+|----------------------------------------------------------
+*/
 	MAIL_MAILER: Env.schema.enum(['smtp'] as const),
 	MAIL_FROM_NAME: Env.schema.string(),
 	MAIL_FROM_ADDRESS: Env.schema.string(),
 	SMTP_HOST: Env.schema.string(),
 	SMTP_PORT: Env.schema.number(),
+
+	/*
+  |----------------------------------------------------------
+  | Variables for configuring the drive package
+  |----------------------------------------------------------
+  */
+	DRIVE_DISK: Env.schema.enum(['s3'] as const),
+	AWS_ACCESS_KEY_ID: Env.schema.string(),
+	AWS_SECRET_ACCESS_KEY: Env.schema.string(),
+	AWS_REGION: Env.schema.string(),
+	S3_BUCKET: Env.schema.string(),
+	S3_ENDPOINT: Env.schema.string.optional({ format: 'url', tld: false }),
 });

@@ -48,6 +48,5 @@ export default loggerConfig;
  * in your application.
  */
 declare module '@adonisjs/core/types' {
-	// oxlint-disable-next-line typescript/no-empty-object-type
 	export interface LoggersList extends InferLoggers<typeof loggerConfig> {}
 }

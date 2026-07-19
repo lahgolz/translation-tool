@@ -24,6 +24,12 @@ const routes = {
     tokens: [{"old":"/login","type":0,"val":"login","end":""}],
     types: placeholder as Registry['session.store']['types'],
   },
+  'session.destroy': {
+    methods: ["POST"],
+    pattern: '/logout',
+    tokens: [{"old":"/logout","type":0,"val":"logout","end":""}],
+    types: placeholder as Registry['session.destroy']['types'],
+  },
   'password_resets.create': {
     methods: ["GET","HEAD"],
     pattern: '/forgot-password',
@@ -48,11 +54,53 @@ const routes = {
     tokens: [{"old":"/reset-password","type":0,"val":"reset-password","end":""}],
     types: placeholder as Registry['password_resets.update']['types'],
   },
-  'session.destroy': {
+  'projects.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/projects',
+    tokens: [{"old":"/projects","type":0,"val":"projects","end":""}],
+    types: placeholder as Registry['projects.index']['types'],
+  },
+  'projects.store': {
     methods: ["POST"],
-    pattern: '/logout',
-    tokens: [{"old":"/logout","type":0,"val":"logout","end":""}],
-    types: placeholder as Registry['session.destroy']['types'],
+    pattern: '/projects',
+    tokens: [{"old":"/projects","type":0,"val":"projects","end":""}],
+    types: placeholder as Registry['projects.store']['types'],
+  },
+  'projects.create': {
+    methods: ["GET","HEAD"],
+    pattern: '/projects/create',
+    tokens: [{"old":"/projects/create","type":0,"val":"projects","end":""},{"old":"/projects/create","type":0,"val":"create","end":""}],
+    types: placeholder as Registry['projects.create']['types'],
+  },
+  'projects.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/projects/:slug',
+    tokens: [{"old":"/projects/:slug","type":0,"val":"projects","end":""},{"old":"/projects/:slug","type":1,"val":"slug","end":""}],
+    types: placeholder as Registry['projects.show']['types'],
+  },
+  'projects.update': {
+    methods: ["PUT"],
+    pattern: '/projects/:slug',
+    tokens: [{"old":"/projects/:slug","type":0,"val":"projects","end":""},{"old":"/projects/:slug","type":1,"val":"slug","end":""}],
+    types: placeholder as Registry['projects.update']['types'],
+  },
+  'projects.settings': {
+    methods: ["GET","HEAD"],
+    pattern: '/projects/:slug/settings',
+    tokens: [{"old":"/projects/:slug/settings","type":0,"val":"projects","end":""},{"old":"/projects/:slug/settings","type":1,"val":"slug","end":""},{"old":"/projects/:slug/settings","type":0,"val":"settings","end":""}],
+    types: placeholder as Registry['projects.settings']['types'],
+  },
+  'projects.picture.store': {
+    methods: ["POST"],
+    pattern: '/projects/:slug/picture',
+    tokens: [{"old":"/projects/:slug/picture","type":0,"val":"projects","end":""},{"old":"/projects/:slug/picture","type":1,"val":"slug","end":""},{"old":"/projects/:slug/picture","type":0,"val":"picture","end":""}],
+    types: placeholder as Registry['projects.picture.store']['types'],
+  },
+  'projects.picture.destroy': {
+    methods: ["DELETE"],
+    pattern: '/projects/:slug/picture',
+    tokens: [{"old":"/projects/:slug/picture","type":0,"val":"projects","end":""},{"old":"/projects/:slug/picture","type":1,"val":"slug","end":""},{"old":"/projects/:slug/picture","type":0,"val":"picture","end":""}],
+    types: placeholder as Registry['projects.picture.destroy']['types'],
   },
 } as const satisfies Record<string, AdonisEndpoint>
 

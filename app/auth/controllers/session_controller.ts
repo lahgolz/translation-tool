@@ -28,7 +28,7 @@ export default class SessionController {
 			return;
 		}
 
-		response.redirect().toRoute('home');
+		response.redirect().toRoute('projects.index');
 	}
 
 	async destroy({ auth, response }: HttpContext) {

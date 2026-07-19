@@ -9,4 +9,4 @@
 
 import router from '@adonisjs/core/services/router';
 
-router.on('/').renderInertia('home', {}).as('home');
+router.on('/').redirect('projects.index').as('home');

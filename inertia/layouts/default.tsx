@@ -1,4 +1,5 @@
 import { usePage } from '@inertiajs/react';
+import { ModalRoot } from 'adonis-inertia-modal/react';
 import { type ReactElement, useEffect } from 'react';
 import { toast, Toaster } from 'sonner';
 
@@ -26,6 +27,7 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
 			<main>{children}</main>
 
 			<Toaster position="top-center" richColors />
+			<ModalRoot />
 		</>
 	);
 }

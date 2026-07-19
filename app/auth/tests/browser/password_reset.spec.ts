@@ -1,5 +1,6 @@
-/* oxlint-disable unbound-method */
+// oxlint-disable unbound-method
 
+import hash from '@adonisjs/core/services/hash';
 import testUtils from '@adonisjs/core/services/test_utils';
 import { test } from '@japa/runner';
 
@@ -25,7 +26,11 @@ test.group('Password reset (browser)', (group) => {
 	});
 
 	test('resets the password from the emailed link', async ({ visit, route }) => {
+		hash.fake();
+
 		const user = await User.create({ email: 'admin@example.com', password: 'secret123' });
+		await user.allow('project.view');
+
 		const token = await passwordResetService.generateFor(user);
 
 		const page = await visit(route('password_resets.edit', { token }));
@@ -41,6 +46,8 @@ test.group('Password reset (browser)', (group) => {
 		await page.getByLabel('Password').fill('new-secret123');
 		await page.getByRole('button', { name: 'Login' }).click();
 
-		await page.assertPath('/');
+		await page.assertPath('/projects');
+
+		hash.restore();
 	});
 });

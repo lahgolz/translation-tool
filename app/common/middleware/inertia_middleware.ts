@@ -2,10 +2,11 @@ import type { HttpContext } from '@adonisjs/core/http';
 import type { NextFn } from '@adonisjs/core/types/http';
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware';
 
+import type User from '#users/models/user';
 import UserTransformer from '#users/transformers/user_transformer';
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
-	share(context: HttpContext) {
+	async share(context: HttpContext) {
 		/**
 		 * The share method is called everytime an Inertia page is rendered. In
 		 * certain cases, a page may get rendered before the session middleware
@@ -34,7 +35,16 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
 				success,
 			}),
 			user: inertia.always(auth?.user ? UserTransformer.transform(auth.user) : undefined),
+			canManageProjects: inertia.always(await this.canManageProjects(auth?.user)),
 		};
+	}
+
+	private async canManageProjects(user?: User) {
+		if (!user) {
+			return false;
+		}
+
+		return (await user.hasRole('admin')) || (await user.hasPermission('project.manage'));
 	}
 
 	async handle(context: HttpContext, next: NextFn) {

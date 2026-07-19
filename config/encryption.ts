@@ -31,6 +31,5 @@ export default encryptionConfig;
  * in your application.
  */
 declare module '@adonisjs/core/types' {
-	// oxlint-disable-next-line typescript/no-empty-object-type
 	export interface EncryptorsList extends InferEncryptors<typeof encryptionConfig> {}
 }

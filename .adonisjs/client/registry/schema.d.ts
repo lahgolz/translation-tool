@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 /// <reference path="../manifest.d.ts" />
 
-import type { ExtractBody, ExtractErrorResponse, ExtractQuery, ExtractResponse } from '@tuyau/core/types'
+import type { ExtractBody, ExtractErrorResponse, ExtractQuery, ExtractQueryForGet, ExtractResponse } from '@tuyau/core/types'
 import type { InferInput, SimpleError } from '@vinejs/vine/types'
 
 export type ParamValue = string | number | bigint | boolean
@@ -27,68 +27,20 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#auth/controllers/session_controller').default['create']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#auth/controllers/session_controller').default['create']>>>
+      response: unknown
+      errorResponse: unknown
     }
   }
   'session.store': {
     methods: ["POST"]
     pattern: '/login'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#auth/validators/user').loginValidator)>>
-      paramsTuple: []
-      params: {}
-      query: ExtractQuery<InferInput<(typeof import('#auth/validators/user').loginValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#auth/controllers/session_controller').default['store']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#auth/controllers/session_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
-    }
-  }
-  'password_resets.create': {
-    methods: ["GET","HEAD"]
-    pattern: '/forgot-password'
-    types: {
       body: {}
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#auth/controllers/password_resets_controller').default['create']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#auth/controllers/password_resets_controller').default['create']>>>
-    }
-  }
-  'password_resets.store': {
-    methods: ["POST"]
-    pattern: '/forgot-password'
-    types: {
-      body: ExtractBody<InferInput<(typeof import('#auth/validators/user').forgotPasswordValidator)>>
-      paramsTuple: []
-      params: {}
-      query: ExtractQuery<InferInput<(typeof import('#auth/validators/user').forgotPasswordValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#auth/controllers/password_resets_controller').default['store']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#auth/controllers/password_resets_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
-    }
-  }
-  'password_resets.edit': {
-    methods: ["GET","HEAD"]
-    pattern: '/reset-password/:token'
-    types: {
-      body: {}
-      paramsTuple: [ParamValue]
-      params: { token: ParamValue }
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#auth/controllers/password_resets_controller').default['edit']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#auth/controllers/password_resets_controller').default['edit']>>>
-    }
-  }
-  'password_resets.update': {
-    methods: ["POST"]
-    pattern: '/reset-password'
-    types: {
-      body: ExtractBody<InferInput<(typeof import('#auth/validators/user').resetPasswordValidator)>>
-      paramsTuple: []
-      params: {}
-      query: ExtractQuery<InferInput<(typeof import('#auth/validators/user').resetPasswordValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#auth/controllers/password_resets_controller').default['update']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#auth/controllers/password_resets_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
+      response: unknown
+      errorResponse: unknown
     }
   }
   'session.destroy': {
@@ -99,8 +51,152 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#auth/controllers/session_controller').default['destroy']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#auth/controllers/session_controller').default['destroy']>>>
+      response: unknown
+      errorResponse: unknown
+    }
+  }
+  'password_resets.create': {
+    methods: ["GET","HEAD"]
+    pattern: '/forgot-password'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+    }
+  }
+  'password_resets.store': {
+    methods: ["POST"]
+    pattern: '/forgot-password'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+    }
+  }
+  'password_resets.edit': {
+    methods: ["GET","HEAD"]
+    pattern: '/reset-password/:token'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { token: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+    }
+  }
+  'password_resets.update': {
+    methods: ["POST"]
+    pattern: '/reset-password'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+    }
+  }
+  'projects.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/projects'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+    }
+  }
+  'projects.store': {
+    methods: ["POST"]
+    pattern: '/projects'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+    }
+  }
+  'projects.create': {
+    methods: ["GET","HEAD"]
+    pattern: '/projects/create'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: unknown
+      errorResponse: unknown
+    }
+  }
+  'projects.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/projects/:slug'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { slug: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+    }
+  }
+  'projects.update': {
+    methods: ["PUT"]
+    pattern: '/projects/:slug'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { slug: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+    }
+  }
+  'projects.settings': {
+    methods: ["GET","HEAD"]
+    pattern: '/projects/:slug/settings'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { slug: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+    }
+  }
+  'projects.picture.store': {
+    methods: ["POST"]
+    pattern: '/projects/:slug/picture'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { slug: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+    }
+  }
+  'projects.picture.destroy': {
+    methods: ["DELETE"]
+    pattern: '/projects/:slug/picture'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { slug: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
     }
   }
 }

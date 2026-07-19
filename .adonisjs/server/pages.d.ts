@@ -17,6 +17,9 @@ declare module '@adonisjs/inertia/types' {
     'auth/reset-password': ExtractProps<(typeof import('../../inertia/pages/auth/reset-password.tsx'))['default']>
     'errors/not_found': ExtractProps<(typeof import('../../inertia/pages/errors/not_found.tsx'))['default']>
     'errors/server_error': ExtractProps<(typeof import('../../inertia/pages/errors/server_error.tsx'))['default']>
-    'home': ExtractProps<(typeof import('../../inertia/pages/home.tsx'))['default']>
+    'projects/create': ExtractProps<(typeof import('../../inertia/pages/projects/create.tsx'))['default']>
+    'projects/index': ExtractProps<(typeof import('../../inertia/pages/projects/index.tsx'))['default']>
+    'projects/settings': ExtractProps<(typeof import('../../inertia/pages/projects/settings.tsx'))['default']>
+    'projects/show': ExtractProps<(typeof import('../../inertia/pages/projects/show.tsx'))['default']>
   }
 }

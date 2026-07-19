@@ -49,6 +49,5 @@ const mailConfig = defineConfig({
 export default mailConfig;
 
 declare module '@adonisjs/mail/types' {
-	// oxlint-disable-next-line typescript/no-empty-object-type
 	export interface MailersList extends InferMailers<typeof mailConfig> {}
 }
