@@ -32,7 +32,9 @@ test.group('Projects (browser)', (group) => {
 
 		await page.getByRole('button', { name: 'New project' }).click();
 		await page.getByLabel('Name').fill('Marketing site');
-		await page.getByLabel('Default language').fill('en');
+		await page.getByLabel('Languages').fill('English');
+		await page.getByRole('option', { name: 'United States' }).click();
+		await page.getByText('Set the project name and its languages.').click();
 		await page.getByRole('button', { name: 'Create project' }).click();
 
 		await page.assertPath('/projects/marketing-site');
@@ -44,7 +46,7 @@ test.group('Projects (browser)', (group) => {
 		await page.assertPath('/projects/marketing-site');
 	});
 
-	test('shows a validation error when the default language is missing', async ({ visit, route, browserContext }) => {
+	test('disables project creation until a language is added', async ({ visit, route, browserContext, assert }) => {
 		await visit(route('home'));
 
 		const user = await createAuthorizedUser();
@@ -55,9 +57,14 @@ test.group('Projects (browser)', (group) => {
 
 		await page.getByRole('button', { name: 'New project' }).click();
 		await page.getByLabel('Name').fill('Marketing site');
-		await page.getByRole('button', { name: 'Create project' }).click();
 
-		await page.assertTextContains('body', 'The defaultLanguage field must be defined');
+		assert.isTrue(await page.getByRole('button', { name: 'Create project' }).isDisabled());
+
+		await page.getByLabel('Languages').fill('English');
+		await page.getByRole('option', { name: 'United States' }).click();
+		await page.getByText('Set the project name and its languages.').click();
+
+		assert.isFalse(await page.getByRole('button', { name: 'Create project' }).isDisabled());
 	});
 
 	test('uploads and displays a project picture', async ({ visit, route, browserContext }) => {
@@ -73,7 +80,8 @@ test.group('Projects (browser)', (group) => {
 
 		await page.getByRole('button', { name: 'New project' }).click();
 		await page.getByLabel('Name').fill('Marketing site');
-		await page.getByLabel('Default language').fill('en');
+		await page.getByLabel('Languages').fill('English');
+		await page.getByRole('option', { name: 'United States' }).click();
 		await page.getByLabel('Picture').setInputFiles({ name: 'picture.png', mimeType: 'image/png', buffer: PNG_BUFFER });
 		await page.getByRole('button', { name: 'Create project' }).click();
 
@@ -134,6 +142,87 @@ test.group('Projects (browser)', (group) => {
 
 		await page.assertPath('/projects/marketing-site/settings');
 		await page.locator('[data-slot="project-picture"]').waitFor({ state: 'attached' });
+	});
+
+	test('adds a language to a project from the settings page', async ({ visit, route, browserContext }) => {
+		const user = await createAuthorizedUser();
+		await ProjectFactory.merge({ name: 'Marketing site', slug: 'marketing-site', defaultLanguage: 'en' }).create();
+
+		await visit(route('home'));
+		await browserContext.loginAs(user);
+
+		const page = await visit(route('projects.settings', { slug: 'marketing-site' }));
+
+		await page.getByRole('tab', { name: 'Languages' }).click();
+		await page.getByLabel('Add a language').fill('French');
+		await page.getByRole('option', { name: '(fr)' }).click();
+		await page.getByRole('button', { name: 'Add language' }).click();
+
+		await page.assertPath('/projects/marketing-site/settings');
+		await page.assertTextContains('body', 'Français');
+	});
+
+	test('removes a language from a project after confirming', async ({ visit, route, browserContext }) => {
+		const user = await createAuthorizedUser();
+		const project = await ProjectFactory.merge({
+			name: 'Marketing site',
+			slug: 'marketing-site',
+			defaultLanguage: 'en',
+		}).create();
+		await project.related('languages').createMany([{ languageCode: 'en' }, { languageCode: 'fr' }]);
+
+		await visit(route('home'));
+		await browserContext.loginAs(user);
+
+		const page = await visit(route('projects.settings', { slug: 'marketing-site' }));
+
+		await page.getByRole('tab', { name: 'Languages' }).click();
+		await page.getByRole('button', { name: 'Remove French | Français (fr)' }).click();
+		await page.getByRole('button', { name: 'Remove', exact: true }).click();
+
+		await page.assertPath('/projects/marketing-site/settings');
+		await page.assertNotExists(page.getByText('Français'));
+	});
+
+	test('sets a language as the default for a project', async ({ visit, route, browserContext }) => {
+		const user = await createAuthorizedUser();
+		const project = await ProjectFactory.merge({
+			name: 'Marketing site',
+			slug: 'marketing-site',
+			defaultLanguage: 'en',
+		}).create();
+		await project.related('languages').createMany([{ languageCode: 'en' }, { languageCode: 'fr' }]);
+
+		await visit(route('home'));
+		await browserContext.loginAs(user);
+
+		const page = await visit(route('projects.settings', { slug: 'marketing-site' }));
+
+		await page.getByRole('tab', { name: 'Languages' }).click();
+		await page.getByRole('button', { name: 'Set French | Français (fr) as default' }).click();
+
+		await page.assertPath('/projects/marketing-site/settings');
+		await page.getByRole('button', { name: 'Remove English | English (en)' }).waitFor({ state: 'attached' });
+	});
+
+	test('cannot remove the default language', async ({ visit, route, browserContext }) => {
+		const user = await createAuthorizedUser();
+		const project = await ProjectFactory.merge({
+			name: 'Marketing site',
+			slug: 'marketing-site',
+			defaultLanguage: 'en',
+		}).create();
+		await project.related('languages').create({ languageCode: 'en' });
+
+		await visit(route('home'));
+		await browserContext.loginAs(user);
+
+		const page = await visit(route('projects.settings', { slug: 'marketing-site' }));
+
+		await page.getByRole('tab', { name: 'Languages' }).click();
+
+		await page.assertTextContains('body', 'Default');
+		await page.assertNotExists(page.getByRole('button', { name: /^Remove/ }));
 	});
 
 	test('deletes a project picture through the picture dialog', async ({ visit, route, browserContext }) => {

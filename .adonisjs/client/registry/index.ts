@@ -102,6 +102,24 @@ const routes = {
     tokens: [{"old":"/projects/:slug/picture","type":0,"val":"projects","end":""},{"old":"/projects/:slug/picture","type":1,"val":"slug","end":""},{"old":"/projects/:slug/picture","type":0,"val":"picture","end":""}],
     types: placeholder as Registry['projects.picture.destroy']['types'],
   },
+  'projects.languages.store': {
+    methods: ["POST"],
+    pattern: '/projects/:slug/languages',
+    tokens: [{"old":"/projects/:slug/languages","type":0,"val":"projects","end":""},{"old":"/projects/:slug/languages","type":1,"val":"slug","end":""},{"old":"/projects/:slug/languages","type":0,"val":"languages","end":""}],
+    types: placeholder as Registry['projects.languages.store']['types'],
+  },
+  'projects.languages.destroy': {
+    methods: ["DELETE"],
+    pattern: '/projects/:slug/languages/:language',
+    tokens: [{"old":"/projects/:slug/languages/:language","type":0,"val":"projects","end":""},{"old":"/projects/:slug/languages/:language","type":1,"val":"slug","end":""},{"old":"/projects/:slug/languages/:language","type":0,"val":"languages","end":""},{"old":"/projects/:slug/languages/:language","type":1,"val":"language","end":""}],
+    types: placeholder as Registry['projects.languages.destroy']['types'],
+  },
+  'projects.languages.default': {
+    methods: ["PUT"],
+    pattern: '/projects/:slug/languages/:language/default',
+    tokens: [{"old":"/projects/:slug/languages/:language/default","type":0,"val":"projects","end":""},{"old":"/projects/:slug/languages/:language/default","type":1,"val":"slug","end":""},{"old":"/projects/:slug/languages/:language/default","type":0,"val":"languages","end":""},{"old":"/projects/:slug/languages/:language/default","type":1,"val":"language","end":""},{"old":"/projects/:slug/languages/:language/default","type":0,"val":"default","end":""}],
+    types: placeholder as Registry['projects.languages.default']['types'],
+  },
 } as const satisfies Record<string, AdonisEndpoint>
 
 export { routes }

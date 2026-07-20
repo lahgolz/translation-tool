@@ -20,6 +20,9 @@ export type ScannedRoutes = {
     'projects.settings': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
     'projects.picture.store': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
     'projects.picture.destroy': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
+    'projects.languages.store': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
+    'projects.languages.destroy': { paramsTuple: [ParamValue,ParamValue]; params: {'slug': ParamValue,'language': ParamValue} }
+    'projects.languages.default': { paramsTuple: [ParamValue,ParamValue]; params: {'slug': ParamValue,'language': ParamValue} }
   }
   GET: {
     'home': { paramsTuple?: []; params?: {} }
@@ -48,12 +51,15 @@ export type ScannedRoutes = {
     'password_resets.update': { paramsTuple?: []; params?: {} }
     'projects.store': { paramsTuple?: []; params?: {} }
     'projects.picture.store': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
+    'projects.languages.store': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
   }
   PUT: {
     'projects.update': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
+    'projects.languages.default': { paramsTuple: [ParamValue,ParamValue]; params: {'slug': ParamValue,'language': ParamValue} }
   }
   DELETE: {
     'projects.picture.destroy': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
+    'projects.languages.destroy': { paramsTuple: [ParamValue,ParamValue]; params: {'slug': ParamValue,'language': ParamValue} }
   }
 }
 declare module '@adonisjs/core/types/http' {

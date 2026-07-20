@@ -74,6 +74,21 @@ export class PermissionSchema extends BaseModel {
 	declare updatedAt: DateTime | null;
 }
 
+export class ProjectLanguageSchema extends BaseModel {
+	static $columns = ['createdAt', 'id', 'languageCode', 'projectId', 'updatedAt'] as const;
+	$columns = ProjectLanguageSchema.$columns;
+	@column.dateTime({ autoCreate: true })
+	declare createdAt: DateTime;
+	@column({ isPrimary: true })
+	declare id: number;
+	@column()
+	declare languageCode: string;
+	@column()
+	declare projectId: number;
+	@column.dateTime({ autoCreate: true, autoUpdate: true })
+	declare updatedAt: DateTime | null;
+}
+
 export class ProjectSchema extends BaseModel {
 	static $columns = ['createdAt', 'defaultLanguage', 'id', 'name', 'picture', 'slug', 'updatedAt'] as const;
 	$columns = ProjectSchema.$columns;

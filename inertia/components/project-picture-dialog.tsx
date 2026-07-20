@@ -99,7 +99,7 @@ export function ProjectPictureDialog({ project }: { project: Data.Projects.Proje
 		event.target.value = '';
 	};
 
-	function handleDrop(event: React.DragEvent<HTMLLabelElement>) {
+	const handleDrop = (event: React.DragEvent<HTMLLabelElement>) => {
 		event.preventDefault();
 
 		setDragging(false);
@@ -109,9 +109,9 @@ export function ProjectPictureDialog({ project }: { project: Data.Projects.Proje
 		if (file) {
 			loadFile(file);
 		}
-	}
+	};
 
-	async function handleUpload() {
+	const handleUpload = async () => {
 		if (!imageSrc || !croppedArea) {
 			return;
 		}
@@ -143,7 +143,7 @@ export function ProjectPictureDialog({ project }: { project: Data.Projects.Proje
 			setError('Could not process the image. Please try a different one.');
 			setProcessing(false);
 		}
-	}
+	};
 
 	const handleDelete = () => {
 		setProcessing(true);

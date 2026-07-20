@@ -4,7 +4,12 @@ import { languageCodePattern } from './language_code.ts';
 
 export const createProjectValidator = vine.create({
 	name: vine.string().trim().minLength(2).maxLength(120),
-	defaultLanguage: vine.string().trim().regex(languageCodePattern),
+	languages: vine.array(vine.string().trim().regex(languageCodePattern)).minLength(1),
+	defaultLanguage: vine
+		.string()
+		.trim()
+		.regex(languageCodePattern)
+		.in((field) => field.parent.languages ?? []),
 	picture: vine
 		.file({
 			size: '2mb',

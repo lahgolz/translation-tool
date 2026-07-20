@@ -3,6 +3,7 @@ import { Fragment } from 'react';
 
 import type { Data } from '#generated/data';
 
+import { ProjectLanguages } from '~/components/project-languages';
 import { ProjectPictureDialog } from '~/components/project-picture-dialog';
 import {
 	Breadcrumb,
@@ -16,6 +17,7 @@ import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
 import { Field, FieldError, FieldGroup, FieldLabel } from '~/components/ui/field';
 import { Input } from '~/components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import type { InertiaProps } from '~/types';
 
 type PageProps = InertiaProps<{
@@ -43,46 +45,67 @@ export default function ProjectsSettings({ project, breadcrumbs }: PageProps) {
 				</BreadcrumbList>
 			</Breadcrumb>
 
-			<div className="flex items-start justify-between gap-6">
-				<div>
-					<h1 className="font-heading text-2xl font-medium">Settings</h1>
-					<p className="text-muted-foreground text-sm">{project.name}</p>
-				</div>
-
-				<ProjectPictureDialog project={project} />
+			<div>
+				<h1 className="font-heading text-2xl font-medium">Settings</h1>
+				<p className="text-muted-foreground text-sm">{project.name}</p>
 			</div>
 
-			<Card>
-				<CardHeader>
-					<CardTitle>General</CardTitle>
-					<CardDescription>Project name.</CardDescription>
-				</CardHeader>
+			<Tabs defaultValue="general">
+				<TabsList variant="line">
+					<TabsTrigger value="general">General</TabsTrigger>
+					<TabsTrigger value="languages">Languages</TabsTrigger>
+				</TabsList>
 
-				<CardContent>
-					<Form route="projects.update" routeParams={{ slug: project.slug }}>
-						{({ errors, processing }) => (
-							<FieldGroup>
-								<Field data-invalid={errors.name ? true : undefined}>
-									<FieldLabel htmlFor="name">Name</FieldLabel>
-									<Input
-										id="name"
-										name="name"
-										defaultValue={project.name}
-										aria-invalid={errors.name ? true : undefined}
-									/>
-									{errors.name && <FieldError>{errors.name}</FieldError>}
-								</Field>
+				<TabsContent value="general">
+					<Card>
+						<CardHeader>
+							<CardTitle>General</CardTitle>
+							<CardDescription>Project name and picture.</CardDescription>
+						</CardHeader>
 
-								<div className="self-start">
-									<Button type="submit" disabled={processing}>
-										Save changes
-									</Button>
-								</div>
-							</FieldGroup>
-						)}
-					</Form>
-				</CardContent>
-			</Card>
+						<CardContent className="flex flex-col gap-6">
+							<ProjectPictureDialog project={project} />
+
+							<Form route="projects.update" routeParams={{ slug: project.slug }}>
+								{({ errors, processing }) => (
+									<FieldGroup>
+										<Field data-invalid={errors.name ? true : undefined}>
+											<FieldLabel htmlFor="name">Name</FieldLabel>
+											<Input
+												id="name"
+												name="name"
+												defaultValue={project.name}
+												aria-invalid={errors.name ? true : undefined}
+											/>
+
+											{errors.name && <FieldError>{errors.name}</FieldError>}
+										</Field>
+
+										<div className="self-start">
+											<Button type="submit" disabled={processing}>
+												Save changes
+											</Button>
+										</div>
+									</FieldGroup>
+								)}
+							</Form>
+						</CardContent>
+					</Card>
+				</TabsContent>
+
+				<TabsContent value="languages">
+					<Card>
+						<CardHeader>
+							<CardTitle>Languages</CardTitle>
+							<CardDescription>Languages available for translation in this project.</CardDescription>
+						</CardHeader>
+
+						<CardContent>
+							<ProjectLanguages project={project} />
+						</CardContent>
+					</Card>
+				</TabsContent>
+			</Tabs>
 		</div>
 	);
 }

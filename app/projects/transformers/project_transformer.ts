@@ -7,6 +7,7 @@ export default class ProjectTransformer extends BaseTransformer<Project> {
 	async toObject() {
 		return {
 			...this.pick(this.resource, ['id', 'name', 'slug', 'defaultLanguage', 'createdAt', 'updatedAt']),
+			languages: this.resource.languages.map((language) => language.languageCode),
 			pictureUrl: this.resource.picture ? await drive.use().getUrl(this.resource.picture) : null,
 		};
 	}

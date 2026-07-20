@@ -7,7 +7,7 @@ import { createProjectValidator, updateProjectValidator } from '../validators/pr
 
 export default class ProjectsController {
 	async index({ inertia }: HttpContext) {
-		const projects = await Project.query().orderBy('name', 'asc');
+		const projects = await Project.query().preload('languages').orderBy('name', 'asc');
 
 		return inertia.render('projects/index', {
 			projects: ProjectTransformer.transform(projects),
@@ -28,7 +28,7 @@ export default class ProjectsController {
 	}
 
 	async show({ params, request, breadcrumbs, inertia }: HttpContext) {
-		const project = await Project.query().where('slug', params.slug).firstOrFail();
+		const project = await Project.query().where('slug', params.slug).preload('languages').firstOrFail();
 
 		breadcrumbs.add(project.name, request.url());
 
@@ -50,7 +50,7 @@ export default class ProjectsController {
 	}
 
 	async settings({ params, breadcrumbs, inertia }: HttpContext) {
-		const project = await Project.query().where('slug', params.slug).firstOrFail();
+		const project = await Project.query().where('slug', params.slug).preload('languages').firstOrFail();
 
 		breadcrumbs.add(project.name, `/projects/${project.slug}`);
 		breadcrumbs.add('Settings', `/projects/${project.slug}/settings`);

@@ -63,13 +63,39 @@ test.group('Projects', (group) => {
 			.loginAs(user)
 			.redirects(0)
 			.withCsrfToken()
-			.form({ name: 'Marketing site', defaultLanguage: 'en' });
+			.form({ name: 'Marketing site', 'languages[]': ['en'], defaultLanguage: 'en' });
 
 		response.assertHeader('location', '/projects/marketing-site');
 
 		const project = await Project.findByOrFail('slug', 'marketing-site');
 		assert.equal(project.name, 'Marketing site');
 		assert.equal(project.defaultLanguage, 'en');
+	});
+
+	test('creates a project with multiple languages', async ({ client, assert }) => {
+		const user = await createAuthorizedUser('manager-multi-language@example.com');
+
+		await client
+			.post('/projects')
+			.loginAs(user)
+			.redirects(0)
+			.withCsrfToken()
+			.form({ name: 'Marketing site', 'languages[]': ['en', 'fr', 'de'], defaultLanguage: 'fr' });
+
+		const project = await Project.findByOrFail('slug', 'marketing-site');
+		await project.load('languages');
+
+		assert.equal(project.defaultLanguage, 'fr');
+		assert.sameMembers(
+			project.languages.map((language) => language.languageCode),
+			['en', 'fr', 'de'],
+		);
+
+		const response = await client.get('/projects').loginAs(user).withInertia();
+
+		response.assertInertiaPropsContains({
+			projects: [{ slug: 'marketing-site', languages: ['en', 'fr', 'de'] }],
+		});
 	});
 
 	test('creates a project with a picture', async ({ client, assert }) => {
@@ -82,6 +108,7 @@ test.group('Projects', (group) => {
 			.redirects(0)
 			.withCsrfToken()
 			.field('name', 'Marketing site')
+			.field('languages[]', 'en')
 			.field('defaultLanguage', 'en')
 			.file('picture', PNG_BUFFER, { filename: 'picture.png', contentType: 'image/png' });
 
@@ -99,12 +126,12 @@ test.group('Projects', (group) => {
 			.post('/projects')
 			.loginAs(user)
 			.withCsrfToken()
-			.form({ name: 'Marketing site', defaultLanguage: 'en' });
+			.form({ name: 'Marketing site', 'languages[]': ['en'], defaultLanguage: 'en' });
 		await client
 			.post('/projects')
 			.loginAs(user)
 			.withCsrfToken()
-			.form({ name: 'Marketing site', defaultLanguage: 'fr' });
+			.form({ name: 'Marketing site', 'languages[]': ['fr'], defaultLanguage: 'fr' });
 
 		const projects = await Project.query().where('name', 'Marketing site').orderBy('id', 'asc');
 
@@ -122,7 +149,7 @@ test.group('Projects', (group) => {
 			.loginAs(user)
 			.redirects(0)
 			.withCsrfToken()
-			.form({ name: 'Marketing site', defaultLanguage: 'en' });
+			.form({ name: 'Marketing site', 'languages[]': ['en'], defaultLanguage: 'en' });
 
 		response.assertStatus(403);
 	});
@@ -141,8 +168,41 @@ test.group('Projects', (group) => {
 		response.assertInertiaPropsContains({
 			errors: {
 				name: 'The name field must be defined',
+				languages: 'The languages field must be defined',
 				defaultLanguage: 'The defaultLanguage field must be defined',
 			},
+		});
+	});
+
+	test('requires at least one language', async ({ client }) => {
+		const user = await createAuthorizedUser('manager-no-languages@example.com');
+
+		const response = await client
+			.post('/projects')
+			.loginAs(user)
+			.withInertia()
+			.withCsrfToken()
+			.header('referer', '/projects/create')
+			.json({ name: 'Marketing site', languages: [], defaultLanguage: 'en' });
+
+		response.assertInertiaPropsContains({
+			errors: { languages: 'The languages field must have at least 1 items' },
+		});
+	});
+
+	test('rejects a default language that is not among the selected languages', async ({ client }) => {
+		const user = await createAuthorizedUser('manager-bad-default@example.com');
+
+		const response = await client
+			.post('/projects')
+			.loginAs(user)
+			.withInertia()
+			.withCsrfToken()
+			.header('referer', '/projects/create')
+			.form({ name: 'Marketing site', 'languages[]': ['en', 'fr'], defaultLanguage: 'de' });
+
+		response.assertInertiaPropsContains({
+			errors: { defaultLanguage: 'The selected defaultLanguage is invalid' },
 		});
 	});
 
@@ -369,5 +429,242 @@ test.group('Projects', (group) => {
 
 		await project.refresh();
 		assert.equal(project.name, 'Marketing site');
+	});
+
+	test('adds a language to an existing project', async ({ client, assert }) => {
+		const user = await createAuthorizedUser('manager-add-language@example.com');
+		const project = await Project.create({
+			name: 'Marketing site',
+			slug: 'marketing-site',
+			defaultLanguage: 'en',
+		});
+		await project.related('languages').create({ languageCode: 'en' });
+
+		const response = await client
+			.post('/projects/marketing-site/languages')
+			.loginAs(user)
+			.redirects(0)
+			.withCsrfToken()
+			.form({ language: 'fr' });
+
+		response.assertStatus(302);
+
+		await project.load('languages');
+		assert.sameMembers(
+			project.languages.map((language) => language.languageCode),
+			['en', 'fr'],
+		);
+	});
+
+	test('does not duplicate a language that has already been added', async ({ client, assert }) => {
+		const user = await createAuthorizedUser('manager-dup-language@example.com');
+		const project = await Project.create({
+			name: 'Marketing site',
+			slug: 'marketing-site',
+			defaultLanguage: 'en',
+		});
+		await project.related('languages').create({ languageCode: 'en' });
+
+		const response = await client
+			.post('/projects/marketing-site/languages')
+			.loginAs(user)
+			.redirects(0)
+			.withCsrfToken()
+			.form({ language: 'en' });
+
+		response.assertStatus(302);
+
+		await project.load('languages');
+		assert.sameMembers(
+			project.languages.map((language) => language.languageCode),
+			['en'],
+		);
+	});
+
+	test('validates the language code format when adding a language', async ({ client }) => {
+		const user = await createAuthorizedUser('manager-bad-language@example.com');
+		await Project.create({
+			name: 'Marketing site',
+			slug: 'marketing-site',
+			defaultLanguage: 'en',
+		});
+
+		const response = await client
+			.post('/projects/marketing-site/languages')
+			.loginAs(user)
+			.withInertia()
+			.withCsrfToken()
+			.header('referer', '/projects/marketing-site/settings')
+			.form({ language: 'not a code' });
+
+		response.assertInertiaPropsContains({
+			errors: { language: 'The language field format is invalid' },
+		});
+	});
+
+	test('rejects adding a language for a user without the project.manage permission', async ({ client, assert }) => {
+		const viewer = await User.create({ email: 'viewer-language@example.com', password: 'secret123' });
+		await viewer.allow('project.view');
+		const project = await Project.create({
+			name: 'Marketing site',
+			slug: 'marketing-site',
+			defaultLanguage: 'en',
+		});
+		await project.related('languages').create({ languageCode: 'en' });
+
+		const response = await client
+			.post('/projects/marketing-site/languages')
+			.loginAs(viewer)
+			.redirects(0)
+			.withCsrfToken()
+			.form({ language: 'fr' });
+
+		response.assertStatus(403);
+
+		await project.load('languages');
+		assert.sameMembers(
+			project.languages.map((language) => language.languageCode),
+			['en'],
+		);
+	});
+
+	test('removes a language from an existing project', async ({ client, assert }) => {
+		const user = await createAuthorizedUser('manager-remove-language@example.com');
+		const project = await Project.create({
+			name: 'Marketing site',
+			slug: 'marketing-site',
+			defaultLanguage: 'en',
+		});
+		await project.related('languages').createMany([{ languageCode: 'en' }, { languageCode: 'fr' }]);
+
+		const response = await client
+			.delete('/projects/marketing-site/languages/fr')
+			.loginAs(user)
+			.redirects(0)
+			.withCsrfToken();
+
+		response.assertStatus(302);
+
+		await project.load('languages');
+		assert.sameMembers(
+			project.languages.map((language) => language.languageCode),
+			['en'],
+		);
+	});
+
+	test('refuses to remove the default language', async ({ client, assert }) => {
+		const user = await createAuthorizedUser('manager-remove-default@example.com');
+		const project = await Project.create({
+			name: 'Marketing site',
+			slug: 'marketing-site',
+			defaultLanguage: 'en',
+		});
+		await project.related('languages').createMany([{ languageCode: 'en' }, { languageCode: 'fr' }]);
+
+		const response = await client
+			.delete('/projects/marketing-site/languages/en')
+			.loginAs(user)
+			.redirects(0)
+			.withCsrfToken();
+
+		response.assertStatus(302);
+
+		await project.load('languages');
+		assert.sameMembers(
+			project.languages.map((language) => language.languageCode),
+			['en', 'fr'],
+		);
+	});
+
+	test('rejects removing a language for a user without the project.manage permission', async ({ client, assert }) => {
+		const viewer = await User.create({ email: 'viewer-remove-language@example.com', password: 'secret123' });
+		await viewer.allow('project.view');
+		const project = await Project.create({
+			name: 'Marketing site',
+			slug: 'marketing-site',
+			defaultLanguage: 'en',
+		});
+		await project.related('languages').createMany([{ languageCode: 'en' }, { languageCode: 'fr' }]);
+
+		const response = await client
+			.delete('/projects/marketing-site/languages/fr')
+			.loginAs(viewer)
+			.redirects(0)
+			.withCsrfToken();
+
+		response.assertStatus(403);
+
+		await project.load('languages');
+		assert.sameMembers(
+			project.languages.map((language) => language.languageCode),
+			['en', 'fr'],
+		);
+	});
+
+	test('changes the default language of a project', async ({ client, assert }) => {
+		const user = await createAuthorizedUser('manager-set-default@example.com');
+		const project = await Project.create({
+			name: 'Marketing site',
+			slug: 'marketing-site',
+			defaultLanguage: 'en',
+		});
+		await project.related('languages').createMany([{ languageCode: 'en' }, { languageCode: 'fr' }]);
+
+		const response = await client
+			.put('/projects/marketing-site/languages/fr/default')
+			.loginAs(user)
+			.redirects(0)
+			.withCsrfToken();
+
+		response.assertStatus(302);
+
+		await project.refresh();
+		assert.equal(project.defaultLanguage, 'fr');
+	});
+
+	test('refuses to set a default language that is not part of the project', async ({ client, assert }) => {
+		const user = await createAuthorizedUser('manager-set-bad-default@example.com');
+		const project = await Project.create({
+			name: 'Marketing site',
+			slug: 'marketing-site',
+			defaultLanguage: 'en',
+		});
+		await project.related('languages').create({ languageCode: 'en' });
+
+		const response = await client
+			.put('/projects/marketing-site/languages/de/default')
+			.loginAs(user)
+			.redirects(0)
+			.withCsrfToken();
+
+		response.assertStatus(302);
+
+		await project.refresh();
+		assert.equal(project.defaultLanguage, 'en');
+	});
+
+	test('rejects changing the default language for a user without the project.manage permission', async ({
+		client,
+		assert,
+	}) => {
+		const viewer = await User.create({ email: 'viewer-set-default@example.com', password: 'secret123' });
+		await viewer.allow('project.view');
+		const project = await Project.create({
+			name: 'Marketing site',
+			slug: 'marketing-site',
+			defaultLanguage: 'en',
+		});
+		await project.related('languages').createMany([{ languageCode: 'en' }, { languageCode: 'fr' }]);
+
+		const response = await client
+			.put('/projects/marketing-site/languages/fr/default')
+			.loginAs(viewer)
+			.redirects(0)
+			.withCsrfToken();
+
+		response.assertStatus(403);
+
+		await project.refresh();
+		assert.equal(project.defaultLanguage, 'en');
 	});
 });

@@ -36,14 +36,43 @@ router
 			.use(middleware.acl('project.manage'));
 
 		router
-			.post('/:slug/picture', [async () => import('./controllers/project_pictures_controller.ts'), 'store'])
-			.as('picture.store')
-			.use(middleware.acl('project.manage'));
+			.group(() => {
+				router
+					.post('/:slug/picture', [async () => import('./controllers/project_pictures_controller.ts'), 'store'])
+					.as('store')
+					.use(middleware.acl('project.manage'));
+
+				router
+					.delete('/:slug/picture', [async () => import('./controllers/project_pictures_controller.ts'), 'destroy'])
+					.as('destroy')
+					.use(middleware.acl('project.manage'));
+			})
+			.as('picture');
 
 		router
-			.delete('/:slug/picture', [async () => import('./controllers/project_pictures_controller.ts'), 'destroy'])
-			.as('picture.destroy')
-			.use(middleware.acl('project.manage'));
+			.group(() => {
+				router
+					.post('/:slug/languages', [async () => import('./controllers/project_languages_controller.ts'), 'store'])
+					.as('store')
+					.use(middleware.acl('project.manage'));
+
+				router
+					.delete('/:slug/languages/:language', [
+						async () => import('./controllers/project_languages_controller.ts'),
+						'destroy',
+					])
+					.as('destroy')
+					.use(middleware.acl('project.manage'));
+
+				router
+					.put('/:slug/languages/:language/default', [
+						async () => import('./controllers/project_languages_controller.ts'),
+						'setDefault',
+					])
+					.as('default')
+					.use(middleware.acl('project.manage'));
+			})
+			.as('languages');
 	})
 	.prefix('projects')
 	.use(middleware.auth())

@@ -199,4 +199,40 @@ export interface Registry {
       errorResponse: unknown
     }
   }
+  'projects.languages.store': {
+    methods: ["POST"]
+    pattern: '/projects/:slug/languages'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { slug: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+    }
+  }
+  'projects.languages.destroy': {
+    methods: ["DELETE"]
+    pattern: '/projects/:slug/languages/:language'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { slug: ParamValue; language: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+    }
+  }
+  'projects.languages.default': {
+    methods: ["PUT"]
+    pattern: '/projects/:slug/languages/:language/default'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { slug: ParamValue; language: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+    }
+  }
 }

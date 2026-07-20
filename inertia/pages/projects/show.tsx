@@ -5,6 +5,7 @@ import { Fragment } from 'react';
 
 import type { Data } from '#generated/data';
 
+import { LanguageCard } from '~/components/language-card';
 import {
 	Breadcrumb,
 	BreadcrumbItem,
@@ -14,6 +15,7 @@ import {
 	BreadcrumbSeparator,
 } from '~/components/ui/breadcrumb';
 import { Button } from '~/components/ui/button';
+import { sortProjectLanguages } from '~/lib/languages';
 import type { InertiaProps } from '~/types';
 
 type PageProps = InertiaProps<{
@@ -63,6 +65,12 @@ export default function ProjectsShow({ project, breadcrumbs }: PageProps) {
 						Settings
 					</Button>
 				)}
+			</div>
+
+			<div className="flex flex-col gap-3">
+				{sortProjectLanguages(project.languages, project.defaultLanguage).map((code) => (
+					<LanguageCard key={code} code={code} />
+				))}
 			</div>
 		</div>
 	);

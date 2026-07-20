@@ -25,5 +25,10 @@ export interface ApiDefinition {
       store: typeof routes['projects.picture.store']
       destroy: typeof routes['projects.picture.destroy']
     }
+    languages: {
+      store: typeof routes['projects.languages.store']
+      destroy: typeof routes['projects.languages.destroy']
+      default: typeof routes['projects.languages.default']
+    }
   }
 }
