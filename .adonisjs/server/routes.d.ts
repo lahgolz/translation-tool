@@ -23,6 +23,10 @@ export type ScannedRoutes = {
     'projects.languages.store': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
     'projects.languages.destroy': { paramsTuple: [ParamValue,ParamValue]; params: {'slug': ParamValue,'language': ParamValue} }
     'projects.languages.default': { paramsTuple: [ParamValue,ParamValue]; params: {'slug': ParamValue,'language': ParamValue} }
+    'admin.roles.index': { paramsTuple?: []; params?: {} }
+    'admin.roles.create': { paramsTuple?: []; params?: {} }
+    'admin.roles.store': { paramsTuple?: []; params?: {} }
+    'admin.roles.destroy': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
   }
   GET: {
     'home': { paramsTuple?: []; params?: {} }
@@ -33,6 +37,8 @@ export type ScannedRoutes = {
     'projects.create': { paramsTuple?: []; params?: {} }
     'projects.show': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
     'projects.settings': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
+    'admin.roles.index': { paramsTuple?: []; params?: {} }
+    'admin.roles.create': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
     'home': { paramsTuple?: []; params?: {} }
@@ -43,6 +49,8 @@ export type ScannedRoutes = {
     'projects.create': { paramsTuple?: []; params?: {} }
     'projects.show': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
     'projects.settings': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
+    'admin.roles.index': { paramsTuple?: []; params?: {} }
+    'admin.roles.create': { paramsTuple?: []; params?: {} }
   }
   POST: {
     'session.store': { paramsTuple?: []; params?: {} }
@@ -52,6 +60,7 @@ export type ScannedRoutes = {
     'projects.store': { paramsTuple?: []; params?: {} }
     'projects.picture.store': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
     'projects.languages.store': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
+    'admin.roles.store': { paramsTuple?: []; params?: {} }
   }
   PUT: {
     'projects.update': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
@@ -60,6 +69,7 @@ export type ScannedRoutes = {
   DELETE: {
     'projects.picture.destroy': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
     'projects.languages.destroy': { paramsTuple: [ParamValue,ParamValue]; params: {'slug': ParamValue,'language': ParamValue} }
+    'admin.roles.destroy': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
   }
 }
 declare module '@adonisjs/core/types/http' {

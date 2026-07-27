@@ -120,6 +120,30 @@ const routes = {
     tokens: [{"old":"/projects/:slug/languages/:language/default","type":0,"val":"projects","end":""},{"old":"/projects/:slug/languages/:language/default","type":1,"val":"slug","end":""},{"old":"/projects/:slug/languages/:language/default","type":0,"val":"languages","end":""},{"old":"/projects/:slug/languages/:language/default","type":1,"val":"language","end":""},{"old":"/projects/:slug/languages/:language/default","type":0,"val":"default","end":""}],
     types: placeholder as Registry['projects.languages.default']['types'],
   },
+  'admin.roles.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/admin/roles',
+    tokens: [{"old":"/admin/roles","type":0,"val":"admin","end":""},{"old":"/admin/roles","type":0,"val":"roles","end":""}],
+    types: placeholder as Registry['admin.roles.index']['types'],
+  },
+  'admin.roles.create': {
+    methods: ["GET","HEAD"],
+    pattern: '/admin/roles/create',
+    tokens: [{"old":"/admin/roles/create","type":0,"val":"admin","end":""},{"old":"/admin/roles/create","type":0,"val":"roles","end":""},{"old":"/admin/roles/create","type":0,"val":"create","end":""}],
+    types: placeholder as Registry['admin.roles.create']['types'],
+  },
+  'admin.roles.store': {
+    methods: ["POST"],
+    pattern: '/admin/roles',
+    tokens: [{"old":"/admin/roles","type":0,"val":"admin","end":""},{"old":"/admin/roles","type":0,"val":"roles","end":""}],
+    types: placeholder as Registry['admin.roles.store']['types'],
+  },
+  'admin.roles.destroy': {
+    methods: ["DELETE"],
+    pattern: '/admin/roles/:slug',
+    tokens: [{"old":"/admin/roles/:slug","type":0,"val":"admin","end":""},{"old":"/admin/roles/:slug","type":0,"val":"roles","end":""},{"old":"/admin/roles/:slug","type":1,"val":"slug","end":""}],
+    types: placeholder as Registry['admin.roles.destroy']['types'],
+  },
 } as const satisfies Record<string, AdonisEndpoint>
 
 export { routes }

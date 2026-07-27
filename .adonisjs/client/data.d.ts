@@ -6,11 +6,23 @@
 /// <reference path="./manifest.d.ts" />
 import type { InferData, InferVariants } from '@adonisjs/core/types/transformers'
 import type { InferSharedProps } from '@adonisjs/inertia/types'
+import type PermissionsPermissionTransformer from '#transformers/permissions/transformers/permission_transformer'
+import type PermissionsRoleTransformer from '#transformers/permissions/transformers/role_transformer'
 import type ProjectsProjectTransformer from '#transformers/projects/transformers/project_transformer'
 import type UsersUserTransformer from '#transformers/users/transformers/user_transformer'
 import type InertiaMiddleware from '#middleware/inertia_middleware'
 
 export namespace Data {
+  export namespace Permissions {
+    export type Permission = InferData<PermissionsPermissionTransformer>
+    export namespace Permission {
+      export type Variants = InferVariants<PermissionsPermissionTransformer>
+    }
+    export type Role = InferData<PermissionsRoleTransformer>
+    export namespace Role {
+      export type Variants = InferVariants<PermissionsRoleTransformer>
+    }
+  }
   export namespace Projects {
     export type Project = InferData<ProjectsProjectTransformer>
     export namespace Project {

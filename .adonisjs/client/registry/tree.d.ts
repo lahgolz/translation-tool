@@ -31,4 +31,12 @@ export interface ApiDefinition {
       default: typeof routes['projects.languages.default']
     }
   }
+  admin: {
+    roles: {
+      index: typeof routes['admin.roles.index']
+      create: typeof routes['admin.roles.create']
+      store: typeof routes['admin.roles.store']
+      destroy: typeof routes['admin.roles.destroy']
+    }
+  }
 }

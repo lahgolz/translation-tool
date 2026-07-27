@@ -84,6 +84,7 @@ export default defineConfig({
 		() => import('#start/validator'),
 		() => import('#auth/routes'),
 		() => import('#projects/routes'),
+		() => import('#permissions/routes'),
 	],
 
 	/*

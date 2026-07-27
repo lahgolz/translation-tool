@@ -112,9 +112,11 @@ export class RoleSchema extends BaseModel {
 	static $columns = [
 		'allowed',
 		'createdAt',
+		'description',
 		'entityId',
 		'entityType',
 		'id',
+		'isSystem',
 		'scope',
 		'slug',
 		'title',
@@ -126,11 +128,15 @@ export class RoleSchema extends BaseModel {
 	@column.dateTime({ autoCreate: true })
 	declare createdAt: DateTime | null;
 	@column()
+	declare description: string | null;
+	@column()
 	declare entityId: bigint | number | null;
 	@column()
 	declare entityType: string | null;
 	@column({ isPrimary: true })
 	declare id: bigint | number;
+	@column()
+	declare isSystem: boolean;
 	@column()
 	declare scope: string | null;
 	@column()

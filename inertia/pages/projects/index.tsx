@@ -67,6 +67,7 @@ export default function ProjectsIndex({ projects }: PageProps) {
 											<CardTitle>
 												<span className="block truncate">{project.name}</span>
 											</CardTitle>
+
 											<p className="text-muted-foreground truncate text-sm">{project.slug}</p>
 										</div>
 									</div>
