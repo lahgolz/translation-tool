@@ -26,13 +26,13 @@ export default function ProjectsIndex({ projects }: PageProps) {
 
 	return (
 		<div className="mx-auto flex max-w-4xl flex-col gap-6 p-6">
-			<div className="flex items-center justify-between">
+			<div className="flex flex-col gap-3 sm:flex-row sm:gap-0 items-center justify-between">
 				<div>
 					<h1 className="font-heading text-2xl font-medium">Projects</h1>
 					<p className="text-muted-foreground text-sm">Top-level boundaries for source content and translations.</p>
 				</div>
 
-				<ModalLink href="/projects/create" as={Button}>
+				<ModalLink href="/projects/create" className="ml-auto" as={Button}>
 					New project
 				</ModalLink>
 			</div>
@@ -50,7 +50,7 @@ export default function ProjectsIndex({ projects }: PageProps) {
 				<div className="flex flex-col gap-4">
 					{projects.map((project) => (
 						<div key={project.id} className="relative">
-							<Card className="flex flex-row gap-0">
+							<Card className="flex flex-col gap-3 sm:flex-row sm:gap-0">
 								<div className="absolute inset-0 [&>a]:block [&>a]:size-full">
 									<Link route="projects.show" routeParams={{ slug: project.slug }} aria-label={project.name} />
 								</div>
@@ -74,13 +74,13 @@ export default function ProjectsIndex({ projects }: PageProps) {
 								</CardHeader>
 
 								<CardContent className="max-w-content right-8 flex flex-0">
-									<div className="flex items-center gap-1">
+									<div className="flex flex-wrap items-center gap-1 sm:flex-nowrap">
 										{sortProjectLanguages(project.languages, project.defaultLanguage).map((code) => {
 											const language = findLanguage(code);
 
 											return language ? (
 												<span key={code} title={formatLanguageLabel(language)}>
-													<FlagIcon countryCode={language.countryCode} className="h-5 w-8 rounded-md" />
+													<FlagIcon countryCode={language.countryCode} />
 												</span>
 											) : null;
 										})}

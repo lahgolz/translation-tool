@@ -13,7 +13,7 @@ type PageProps = InertiaProps<{
 export default function AdminRolesIndex({ roles }: PageProps) {
 	return (
 		<div className="mx-auto flex max-w-4xl flex-col gap-6 p-6">
-			<div className="flex items-center justify-between">
+			<div className="flex flex-col gap-3 sm:flex-row sm:gap-0 items-center justify-between">
 				<div>
 					<h1 className="font-heading text-2xl font-medium">Roles & permissions</h1>
 					<p className="text-muted-foreground text-sm">
@@ -21,7 +21,7 @@ export default function AdminRolesIndex({ roles }: PageProps) {
 					</p>
 				</div>
 
-				<ModalLink href="/admin/roles/create" as={Button}>
+				<ModalLink href="/admin/roles/create" className="ml-auto" as={Button}>
 					New role
 				</ModalLink>
 			</div>
