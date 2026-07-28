@@ -36,6 +36,7 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
 			}),
 			user: inertia.always(auth?.user ? UserTransformer.transform(auth.user) : undefined),
 			canManageProjects: inertia.always(await this.canManageProjects(auth?.user)),
+			canAccessAdminPanel: inertia.always(await this.canAccessAdminPanel(auth?.user)),
 		};
 	}
 
@@ -45,6 +46,14 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
 		}
 
 		return (await user.hasRole('admin')) || (await user.hasPermission('project.manage'));
+	}
+
+	private async canAccessAdminPanel(user?: User) {
+		if (!user) {
+			return false;
+		}
+
+		return (await user.hasRole('admin')) || (await user.hasPermission('members.manage'));
 	}
 
 	async handle(context: HttpContext, next: NextFn) {

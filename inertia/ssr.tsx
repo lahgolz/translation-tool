@@ -8,6 +8,7 @@ import ReactDOMServer from 'react-dom/server';
 import type { Data } from '#generated/data';
 
 import { client } from '~/client';
+import { ThemeProvider } from '~/components/theme-provider';
 import Layout from '~/layouts/default';
 
 // oxlint-disable-next-line typescript/no-explicit-any
@@ -25,7 +26,9 @@ export default async function render(page: any) {
 			return (
 				<TuyauProvider client={client}>
 					<ModalStackProvider>
-						<App {...props} />
+						<ThemeProvider>
+							<App {...props} />
+						</ThemeProvider>
 					</ModalStackProvider>
 				</TuyauProvider>
 			);
